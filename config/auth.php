@@ -54,7 +54,7 @@ return [
     'driver' => 'jwt',
     'provider' => 'veterinarians',
 ],
-'admin' => [
+   'admin' => [
     'driver' => 'jwt',
     'provider' => 'admins',
 ],

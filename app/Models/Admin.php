@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Admin extends  Authenticatable implements JWTSubject
 {
- use HasFactory,Notifiable,HasRoles,HasApiTokens,HasApiTokens;
+ use HasFactory,Notifiable,HasRoles,HasApiTokens;
 
 
     protected $fillable = [

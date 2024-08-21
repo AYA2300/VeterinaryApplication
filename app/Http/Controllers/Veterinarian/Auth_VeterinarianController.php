@@ -68,4 +68,18 @@ class Auth_VeterinarianController extends Controller
     }
 
 
+    public function refresh(Request $request)
+    {
+        $result = $this->auth_veterian_service->refresh_token();
+
+        $output = [];
+        if ($result['status_code'] == 200) {
+            $result_data = $result['data'];
+            $output['auth_token'] = $result_data['auth_token'];
+        }
+
+        return $this->send_response($output, $result['msg'], $result['status_code']);
+    }
+
+
 }

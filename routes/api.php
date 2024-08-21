@@ -37,6 +37,7 @@ Route::group(['prefix' => 'veterinarian'], function () {
         Route::post('auth/login-veterinarian', 'login_veterinarian')->name('auth.login_veterinarian');
 
         // Refresh auth Token
+        Route::Post('veterinarian-refresh', 'refresh')->name('veterinarian.refresh');
 
         Route::group(['middleware' => ['auth:veterinarian']], function () {
 

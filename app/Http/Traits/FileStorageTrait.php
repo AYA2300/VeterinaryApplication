@@ -3,6 +3,7 @@ namespace App\Http\Traits;
 
 use Exception;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
  trait FileStorageTrait{
@@ -53,6 +54,15 @@ use Illuminate\Support\Facades\Storage;
         $url = Storage::url($path);
         return $url;
     }
+    // public function store_multi_images($images) :array
+    // {
+    //     $images=[];
+    //     foreach ($images as $image) {
+    //          $images[] = $this->storeFile($image, 'images');
+    //     }
+    //     return $images;
+
+    // }
 
  }
 

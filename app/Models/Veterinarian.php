@@ -30,6 +30,10 @@ class Veterinarian extends Authenticatable implements JWTSubject
         'remember_token',
     ];
 
+    //casts image to array data
+    protected $casts = [
+        'experience_certificate_image' => 'array',
+    ];
 
         /**
      * Get the identifier that will be stored in the subject claim of the JWT.

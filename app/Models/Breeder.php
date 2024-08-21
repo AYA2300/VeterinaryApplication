@@ -11,7 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Breeder  extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable,HasRoles;
+    use HasFactory, Notifiable,HasRoles,HasApiTokens;
 
 
     protected $fillable=[

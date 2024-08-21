@@ -54,6 +54,10 @@ return [
     'driver' => 'jwt',
     'provider' => 'veterinarians',
 ],
+'admin' => [
+    'driver' => 'jwt',
+    'provider' => 'admins',
+],
     ],
 
     /*
@@ -87,6 +91,10 @@ return [
         'veterinarians' => [
             'driver' => 'eloquent',
             'model' => App\Models\Veterinarian::class,
+        ],
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
         ],
 
         // 'users' => [

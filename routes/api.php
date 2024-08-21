@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Veterinarian\Auth_VeterinarianController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,4 +26,23 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
 
+});
+
+
+//
+Route::group(['prefix' => 'veterinarian'], function () {
+
+    Route::controller(Auth_VeterinarianController::class)->group(function () {
+        Route::post('auth/register-veterinarian', 'register_veterinarian')->name('auth.register_veterinarian');
+        Route::post('auth/login-veterinarian', 'login_veterinarian')->name('auth.login_veterinarian');
+
+        // Refresh auth Token
+
+        Route::group(['middleware' => ['auth:veterinarian']], function () {
+
+
+            //logout
+            Route::Post('auth/logout-veterinarian', 'logout_veterinarian')->name('auth.logout');
+        });
+    });
 });

@@ -14,18 +14,13 @@ return new class extends Migration
         Schema::create('veterinarians', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('university');
-            $table->year('graduation_year');
-            $table->string('profile_picture')->nullable();
-            $table->string('degree_certificate')->nullable();
-            $table->string('experience_certificate')->nullable();
+            $table->string('certificate_image');
+            $table->string('experience_certificate_image')->nullable();
             $table->enum('role',['veterinarian']);
             $table->rememberToken();
             $table->string('email')->unique();
             $table->string('password');
-
-
-
+            $table->string('confirm_password');
             $table->timestamps();
         });
     }

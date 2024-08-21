@@ -16,6 +16,7 @@ class RoleSeeder extends Seeder
         //
         $veterine_role = Role::create(['name' => 'veterinarian', 'guard_name' => 'veterinarian']);
         $breeder_role = Role::create(['name' => 'breeder', 'guard_name' => 'breeder']);
+        $admin_role = Role::create(['name' => 'admin', 'guard_name' => 'admin']);
 
 
     }

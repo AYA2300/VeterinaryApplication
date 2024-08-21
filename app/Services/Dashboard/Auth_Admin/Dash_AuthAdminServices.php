@@ -18,7 +18,12 @@ class Dash_AuthAdminServices{
         ];
 
 
-        if ($auth_token = Auth::guard('admin')->attempt($credentials)) {
+        if (!$auth_token = Auth::guard('admin')->attempt($credentials)) {
+
+            $status_code = 404;
+            $msg = 'Please Check your email and Password';
+        } else {
+
             $admin = Auth::guard('admin')->user();
 
             $data = [
@@ -27,9 +32,7 @@ class Dash_AuthAdminServices{
             ];
             $status_code = 200;
             $msg = 'logged In';
-
-      }
-
+        }
         $result = [
             'data' => $data,
             'status_code' => $status_code,

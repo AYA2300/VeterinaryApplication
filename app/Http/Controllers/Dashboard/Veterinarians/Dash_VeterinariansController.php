@@ -5,10 +5,15 @@ namespace App\Http\Controllers\Dashboard\Veterinarians;
 use App\Models\Veterinarian;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Traits\ApiResponseTrait;
+use App\Http\Resources\Veterinarian\Auth_VeterinarianResource;
+use App\Services\Dashboard\Veterinarians\Dash_VeterinariansService;
 
 class Dash_VeterinariansController extends Controller
 {
     //
+    use ApiResponseTrait;
+
     public function __construct(protected Dash_VeterinariansService $dash_veterinarians_services)
 
     {
@@ -34,12 +39,13 @@ class Dash_VeterinariansController extends Controller
 
     public function get_veterinarian(Veterinarian $veterinarian)
     {
-        $result= $this->dash_veterinarians_services->get_veterinarian();
+        $result= $this->dash_veterinarians_services->get_veterinarian($veterinarian);
         $output = [];
         if ($result['status_code'] == 200) {
             $result_data = $result['data'];
             // response data preparation:
             $output['veterinarian'] = new Auth_VeterinarianResource($result_data['veterinarian']);
+
 
         }
       return $this->send_response($output, $result['msg'], $result['status_code']);

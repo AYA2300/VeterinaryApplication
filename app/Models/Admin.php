@@ -29,36 +29,29 @@ protected $hidden = [
     'remember_token',
 ];
 
-/**
- * Always encrypt password when it is updated.
- *
- * @param $value
- * @return string
- */
-public function setPasswordAttribute($value): void
-{
-    $this->attributes['password'] = bcrypt($value);
-}
 
+    //casts image to array data
+    protected $casts = [
+        'experience_certificate_image' => 'array',
+    ];
 
-/**
- * Get the identifier that will be stored in the subject claim of the JWT.
- *
- * @return mixed
- */
-public function getJWTIdentifier()
-{
-    return $this->getKey();
-}
+        /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
 
-/**
- * Return a key value array, containing any custom claims to be added to the JWT.
- *
- * @return array
- */
-public function getJWTCustomClaims()
-{
-    return [];
-}
-
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 }

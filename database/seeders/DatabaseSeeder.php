@@ -17,12 +17,12 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
+        // \App\Models\AnimalCategorie::create([
+        //     'name' => 'COW',
+
         // ]);
         $this->call(RoleSeeder::class);
-        $this->call(BreederSeeder::class);
+       // $this->call(BreederSeeder::class);
         $this->call(AdminSeeder::class);
 
 

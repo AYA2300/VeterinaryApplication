@@ -2,6 +2,7 @@
 namespace App\Services\Dashboard\Auth_Admin;
 
 use Illuminate\Support\Facades\Auth;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class Dash_AuthAdminServices{
        //login
@@ -46,7 +47,7 @@ class Dash_AuthAdminServices{
     //-------------------------------------
 
     // Refresh auth Token
-    public function refresh()
+    public function refresh_admin()
     {
         $data = [];
         $status_code = 400;

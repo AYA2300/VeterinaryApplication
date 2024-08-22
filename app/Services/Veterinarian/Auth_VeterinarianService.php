@@ -22,7 +22,7 @@ use FileStorageTrait;
 
         try{
             DB::beginTransaction();
-            $experience_certificate_image=['no images multi '];
+            $experience_certificate_image=[];
             if (isset($input_data['experience_certificate_image'])) {
                 foreach ($input_data['experience_certificate_image'] as $image) {
                     $experience_certificate_image[] = $this->storeFile($image, 'images');

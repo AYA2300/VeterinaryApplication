@@ -5,7 +5,7 @@ use App\Models\Veterinarian;
 
     class Dash_VeterinariansService
     {
-
+//get all
   public function get_veterinarians()
        {
         $data=[];
@@ -26,6 +26,7 @@ use App\Models\Veterinarian;
         return $result;
 
        }
+       //get single
        public function get_veterinarian(Veterinarian $veterinarian)
        {
         $data=[];
@@ -45,6 +46,31 @@ use App\Models\Veterinarian;
         return $result;
 
        }
+       //delete
+       public function delete_veterinarian(Veterinarian $veterinarian)
+       {
+        $data=[];
+        $result=[];
+        $status_code = 400;
+        $msg = '';
+         if(!$veterinarian){
+            $msg='الطبيب غير موجود';
+            $status_code=404;
+         }
+         $veterinarian->tokens()->delete();
+         $veterinarian->delete();
+         $msg='تم حذف الطبيب';
+         $status_code=200;
+        $result = [
+            'data' => $data,
+            'status_code' => $status_code,
+            'msg' => $msg,
+        ];
+
+        return $result;
+
+       }
+
     }
 
 

@@ -38,21 +38,32 @@ Route::group(['prefix' => 'dash'], function () {
     Route::controller(AuthAdminController::class)->group(function () {
 
         Route::Post('login-admin','login_admin')->name('dash.login_admin');
+        Route::Post('auth/refresh-admin', 'refresh_admin')->name('dash.auth.refresh');
+        Route::group(['middleware' => ['auth:admin']], function () {
 
-     });
+
+            //logout
+            Route::Post('auth/logout_admin', 'logout_admin')->name('dash.auth.logout');
+        });
+    });
     Route::group(['middleware' => ['auth:admin']], function () {
 
         Route::group(['middleware' => ['role:admin']], function () {
             Route::controller(Dash_VeterinariansController::class)->group(function () {
-
-                Route::get('get-veterinarians','get_veterinarians')->name('app.get_veterinarians');
-                Route::get('get-veterinarian/{veterinarian}','get_veterinarian')->name('app.get_veterinarian');
+                //logout admin
+                //get all
+                Route::get('get-veterinarians','get_veterinarians')->name('dash.get_veterinarians');
+                //show doctor
+                Route::get('get-veterinarian/{veterinarian}','get_veterinarian')->name('dash.get_veterinarian');
+                //delete doctor
+                Route::Delete('delete-veterinarian/{veterinarian}','delete_veterinarian')->name('dash.delete_veterinarian');
 
              });
 
         });
     });
 });
+//------------------------------------auth doctor--------------------------
 Route::group(['prefix' => 'veterinarian'], function () {
 
     Route::controller(Auth_VeterinarianController::class)->group(function () {
@@ -69,13 +80,14 @@ Route::group(['prefix' => 'veterinarian'], function () {
     });
 });
 //------------------------------------------------//
-//app
+//application
 Route::group(['prefix' => 'app'], function () {
      //section veterinarian
 
      Route::controller(App_VeterinarianController::class)->group(function () {
-
+//gat all
         Route::get('get-veterinarians','get_veterinarians')->name('app.get_veterinarians');
+       //get single
         Route::get('get-veterinarian/{veterinarian}','get_veterinarian')->name('app.get_veterinarian');
 
      });

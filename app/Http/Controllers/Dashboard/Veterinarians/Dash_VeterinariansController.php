@@ -21,6 +21,7 @@ class Dash_VeterinariansController extends Controller
 
     }
 
+    //get all
     public function get_veterinarians()
     {
         $result= $this->dash_veterinarians_services->get_veterinarians();
@@ -36,7 +37,8 @@ class Dash_VeterinariansController extends Controller
       return $this->send_response($output, $result['msg'], $result['status_code']);
 
     }
-
+    //----------------------------------------
+    /* get single veterinarian*/
     public function get_veterinarian(Veterinarian $veterinarian)
     {
         $result= $this->dash_veterinarians_services->get_veterinarian($veterinarian);
@@ -51,4 +53,16 @@ class Dash_VeterinariansController extends Controller
       return $this->send_response($output, $result['msg'], $result['status_code']);
 
     }
+//-----------------------------------------
+  public function delete_veterinarian(Veterinarian $veterinarian ){
+    $result=$this->dash_veterinarians_services->delete_veterinarian($veterinarian);
+
+    $output=[];
+    if($result['status_code']==200){
+        $result_data = $result['data'];
+    }
+
+    return $this->send_response($output, $result['msg'], $result['status_code']);
+
+  }
 }

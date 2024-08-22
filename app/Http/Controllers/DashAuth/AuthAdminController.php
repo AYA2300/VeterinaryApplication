@@ -35,7 +35,31 @@ class AuthAdminController extends Controller
 
      return $this->send_response($output, $result['msg'], $result['status_code']);
 
-
     }
+    //logout admin
 
+      public function logout_admin()
+      {
+        $result=$this->auth_admin_service->logout_admin();
+        $output=[];
+        if($result['status_code'] == 200){
+            $result_data = $result['data'];
+            // response data preparation:
+        }
+
+        return $this->send_response($output, $result['msg'], $result['status_code']);
+      }
+///refresh
+
+     public function refresh_admin(Request $request){
+        $result = $this->auth_admin_service->refresh_admin();
+
+        $output = [];
+        if ($result['status_code'] == 200) {
+            $result_data = $result['data'];
+            $output['auth_token'] = $result_data['auth_token'];
+        }
+
+        return $this->send_response($output, $result['msg'], $result['status_code']);
+     }
 }

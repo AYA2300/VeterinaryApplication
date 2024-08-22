@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Auth_BreederRequest;
+namespace App\Http\Requests\Breeder;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Login_BreederRequest extends FormRequest
+class Register_Breeder_Request extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,13 @@ class Login_BreederRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name'=>'required|string|min:2',
+            'password'=>'required|string|min:6|max:8',
+            'confirm_password' => 'min:6|same:password',
             'phone_number'=>'required|string',
-            'password'=>'required|string|min:6|max:8'
+            'region'=>'string|max:255',
+            'role'=>['in:breeder'],
+            'category_id'=>'required'
         ];
     }
 }

@@ -17,10 +17,10 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        \App\Models\AnimalCategorie::create([
-            'name' => 'COW',
+        // \App\Models\AnimalCategorie::create([
+        //     'name' => 'COW',
 
-        ]);
+        // ]);
         $this->call(RoleSeeder::class);
        // $this->call(BreederSeeder::class);
         $this->call(AdminSeeder::class);

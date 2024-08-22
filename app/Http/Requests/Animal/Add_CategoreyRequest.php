@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Animal;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Register_BreederRequest extends FormRequest
+class Add_CategoreyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,13 +22,7 @@ class Register_BreederRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>'required|string|min:2',
-            'password'=>'required|string|min:6|max:8',
-            'confirm_password' => 'min:6|same:password',
-            'phone_number'=>'required',
-            'region'=>'string|max:255',
-            'role'=>['in:breeder'],
-            'category_id'=>'required'
+            'name'=>'required|string'
 
         ];
     }

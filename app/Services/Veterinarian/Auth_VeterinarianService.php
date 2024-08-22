@@ -69,6 +69,7 @@ use HasApiTokens,FileStorageTrait;
             $status_code = 400;
             $msg = '';
             $result = [];
+
              $credentials=[
                 'email'=>$input_data['email'],
                 'password' =>$input_data['password']
@@ -79,6 +80,7 @@ use HasApiTokens,FileStorageTrait;
              }
              else{
            $veterinarian=Auth::guard('veterinarian')->user();
+
            $data = [
             'veterinarian' => $veterinarian,
             'auth_token' => $auth_token,
@@ -96,6 +98,7 @@ use HasApiTokens,FileStorageTrait;
             return $result;
 
             }
+
             //logout
             public function logout_veterinarian()
             {
@@ -105,7 +108,7 @@ use HasApiTokens,FileStorageTrait;
                 $result = [];
 
                 $user = Auth::guard('veterinarian')->user();
-               // $user->tokens()->delete(); // Or mark tokens as invalid
+               //$user->tokens()->delete(); // Or mark tokens as invalid
 
                 // Log out the veterinarian
                 Auth::guard('veterinarian')->logout();

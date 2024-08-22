@@ -1,10 +1,14 @@
 <?php
 
+//use App\Http\Controllers\Categories\AnimalCategorieController;
+
+use App\Http\Controllers\Animal\AnimalCategorieController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Breeder\Auth_BreederController;
 use App\Http\Controllers\Veterinarian\Auth_VeterinarianController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -65,3 +69,19 @@ Route::group(['prefix' => 'breeder'], function () {
         });
     });
 });
+
+Route::group(['prefix' => 'categories'], function () {
+
+    Route::controller(AnimalCategorieController::class)->group(function () {
+        Route::post('add/animal_categorey', 'add_categorey')->name('add_categorey');
+        Route::post('Edit/animal_categorey/{id}', 'update_categorey')->name('update_categorey');
+        Route::get('get/animal_categorey', 'get_categories')->name('get_categories');
+        Route::delete('delete/animal_categorey/{id}', 'delete_categories')->name('delete_categories');
+
+
+
+    });
+});
+
+
+

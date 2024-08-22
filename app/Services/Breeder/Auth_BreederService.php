@@ -64,15 +64,16 @@ use Throwable;
 
         public function login_breeder(array $input_data){
 
-            $data=[];
-            $status_code=400;
-            $msg='';
-            $result=[];
+            $data = [];
+            $status_code = 400;
+            $msg = '';
+            $result = [];
 
             $credentials=[
                 'phone_number'=>$input_data['phone_number'],
                 'password'=>$input_data['password']
             ];
+
             if(!$auth_token =Auth::guard('breeder')->attempt($credentials)){
                 $status_code=404;
                 $msg ='Please Check your number and password';
@@ -80,12 +81,15 @@ use Throwable;
             }
             else{
                 $breeder=Auth::guard('breeder')->user();
+
                 $data=[
                     'breeder'=>$breeder,
                     'auth_token'=>$auth_token
                 ];
+
                 $status_code=200;
                 $msg="logged in";
+
                 $result=[
                     'data'=>$data,
                     'status_code'=>$status_code,
@@ -106,7 +110,7 @@ use Throwable;
                 $result = [];
 
                 $user=Auth::guard('breeder')->user();
-                // $user->tokens()->delete();
+                $user->tokens()->delete();
                 Auth::guard('breeder')->logout();
 
                 $msg='logged out';

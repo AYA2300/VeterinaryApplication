@@ -9,10 +9,11 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\FileStorageTrait;
+use Laravel\Sanctum\HasApiTokens;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class Auth_VeterinarianService{
-use FileStorageTrait;
+use HasApiTokens,FileStorageTrait;
     public function register_veterinarian(array $input_data)
     {
         $data = [];
@@ -68,16 +69,18 @@ use FileStorageTrait;
             $status_code = 400;
             $msg = '';
             $result = [];
+
              $credentials=[
                 'email'=>$input_data['email'],
                 'password' =>$input_data['password']
              ];
-             if(!$auth_token = Auth::guard('veterinarian')->attempt($credentials)){
+            if(!$auth_token = Auth::guard('veterinarian')->attempt($credentials)){
                 $status_code = 404;
             $msg = 'Please Check your email and Password';
              }
              else{
            $veterinarian=Auth::guard('veterinarian')->user();
+
            $data = [
             'veterinarian' => $veterinarian,
             'auth_token' => $auth_token,
@@ -95,6 +98,7 @@ use FileStorageTrait;
             return $result;
 
             }
+
             //logout
             public function logout_veterinarian()
             {
@@ -104,7 +108,7 @@ use FileStorageTrait;
                 $result = [];
 
                 $user = Auth::guard('veterinarian')->user();
-                $user->tokens()->delete(); // Or mark tokens as invalid
+               //$user->tokens()->delete(); // Or mark tokens as invalid
 
                 // Log out the veterinarian
                 Auth::guard('veterinarian')->logout();

@@ -14,11 +14,15 @@ class Breeder  extends Authenticatable implements JWTSubject
     use HasFactory, Notifiable,HasRoles,HasApiTokens;
 
 
+
     protected $fillable=[
         'name',
         'phone_number',
+        'confirm_password',
         'password',
-        'role'
+        'role',
+        'category_id',
+        'region'
 
 
     ];
@@ -41,5 +45,10 @@ class Breeder  extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function AnimalCategorie(){
+        return $this->hasOne(AnimalCategorie::class,'category_id','id');
+
     }
 }

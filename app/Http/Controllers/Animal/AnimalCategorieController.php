@@ -17,7 +17,11 @@ class AnimalCategorieController extends Controller
 {
     use ApiResponseTrait;
     public function __construct(protected Categorey_Services $category_service)
-    {}
+    {
+        $this->middleware(['auth:admin', 'role:admin']);
+
+
+    }
 
     public function add_categorey(Add_CategoreyRequest $request)
     {

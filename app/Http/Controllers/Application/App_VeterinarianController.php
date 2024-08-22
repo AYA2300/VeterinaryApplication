@@ -20,6 +20,7 @@ class App_VeterinarianController extends Controller
 
 
      }
+     //get all Veterinarians
      public function get_veterinarians()
      {
          $result= $this->app_veterinarian_service->get_veterinarians();
@@ -35,6 +36,8 @@ class App_VeterinarianController extends Controller
        return $this->send_response($output, $result['msg'], $result['status_code']);
 
      }
+     //-------------------------------------------
+     //get single Veterinarian
      public function get_veterinarian(Veterinarian $veterinarian)
      {
          $result= $this->app_veterinarian_service->get_veterinarian($veterinarian);

@@ -9,7 +9,7 @@ use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\DashAuth\AuthAdminController;
 use App\Http\Controllers\Application\App_VeterinarianController;
-=======
+
 use App\Http\Controllers\Breeder\Auth_BreederController;
 
 use App\Http\Controllers\Veterinarian\Auth_VeterinarianController;
@@ -40,7 +40,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // });
 
 
-//
+//--------------------section Daashboard--------------------------------
 Route::group(['prefix' => 'dash'], function () {
 
     Route::controller(AuthAdminController::class)->group(function () {
@@ -50,15 +50,16 @@ Route::group(['prefix' => 'dash'], function () {
         Route::group(['middleware' => ['auth:admin']], function () {
 
 
-            //logout
+            //logout Admin
             Route::Post('auth/logout_admin', 'logout_admin')->name('dash.auth.logout');
         });
     });
     Route::group(['middleware' => ['auth:admin']], function () {
 
         Route::group(['middleware' => ['role:admin']], function () {
+            //crud
             Route::controller(Dash_VeterinariansController::class)->group(function () {
-                //logout admin
+
                 //get all
                 Route::get('get-veterinarians','get_veterinarians')->name('dash.get_veterinarians');
                 //show doctor
@@ -67,11 +68,22 @@ Route::group(['prefix' => 'dash'], function () {
                 Route::Delete('delete-veterinarian/{veterinarian}','delete_veterinarian')->name('dash.delete_veterinarian');
 
              });
+             //----crud category---------------
+             Route::controller(AnimalCategorieController::class)->group(function () {
+                Route::post('add/animal_categorey', 'add_categorey')->name('add_categorey');
+                Route::post('Edit/animal_categorey/{id}', 'update_categorey')->name('update_categorey');
+                Route::get('get/animal_categorey', 'get_categories')->name('get_categories');
+                Route::delete('delete/animal_categorey/{id}', 'delete_categories')->name('delete_categories');
+
+
+
+            });
 
         });
     });
 });
-//------------------------------------auth doctor--------------------------
+//--------------------------------End DashBoaard------------------------
+//------------------------------------auth veterinarian--------------------------
 Route::group(['prefix' => 'veterinarian'], function () {
 
     Route::controller(Auth_VeterinarianController::class)->group(function () {
@@ -88,7 +100,7 @@ Route::group(['prefix' => 'veterinarian'], function () {
     });
 });
 
-//application
+//-----------------------------------Start section application Front-----------------------------------
 Route::group(['prefix' => 'app'], function () {
      //section veterinarian
 
@@ -103,7 +115,7 @@ Route::group(['prefix' => 'app'], function () {
 });
 
 
-
+//-----------------------------Auth breeder-----------------------------------------
 Route::group(['prefix' => 'breeder'], function () {
 
     Route::controller(Auth_BreederController::class)->group(function () {
@@ -121,18 +133,7 @@ Route::group(['prefix' => 'breeder'], function () {
     });
 });
 
-Route::group(['prefix' => 'categories'], function () {
 
-    Route::controller(AnimalCategorieController::class)->group(function () {
-        Route::post('add/animal_categorey', 'add_categorey')->name('add_categorey');
-        Route::post('Edit/animal_categorey/{id}', 'update_categorey')->name('update_categorey');
-        Route::get('get/animal_categorey', 'get_categories')->name('get_categories');
-        Route::delete('delete/animal_categorey/{id}', 'delete_categories')->name('delete_categories');
-
-
-
-    });
-});
 
 
 

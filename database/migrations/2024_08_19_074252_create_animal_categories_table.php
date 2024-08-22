@@ -11,16 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('breeders', function (Blueprint $table) {
+        Schema::create('animal_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('password');
-            $table->string('confirm_password');
-            $table->string('phone_number');
-            $table->enum('role',['breeder']);
-            $table->foreignId('category_id')->references('id')->on('animal_categories');
-            $table->string('region');
-            $table->rememberToken();
+
             $table->timestamps();
         });
     }
@@ -30,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('breeders');
+        Schema::dropIfExists('animal_categories');
     }
 };

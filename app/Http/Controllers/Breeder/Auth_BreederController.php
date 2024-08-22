@@ -30,7 +30,7 @@ class Auth_BreederController extends Controller
             $result_data = $result['data'];
             // response data preparation:
             $output['auth_token']   = $result_data['auth_token'];
-            $output['breeder']= new Auth_BreederResource($result_data['breeder']);
+            $output['Breeder']= new Auth_BreederResource($result_data['Breeder']);
 
 
     }

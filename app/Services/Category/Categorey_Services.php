@@ -62,19 +62,19 @@ use Throwable;
 
                     // العثور على الفئة باستخدام المعرف
                     $Category = AnimalCategorie::find($id);
+                   if($Category){
+                    if(isset($input_data['name'])){
+                        $Category->name=$input_data['name']??$Category->name;
+                        }
+                        $Category->save();
 
-                    if ($Category) {
-                        // تحديث بيانات الفئة
-                        $Category->update([
-                            'name' => $input_data['name'],
-                        ]);
+                           DB::commit();
+                           $data['Animal_Categorey'] = $Category;
+                           $status_code = 200;
+                           $msg = 'Animal_Categorey Updated';
+                   }
 
-                        DB::commit();
-
-                        $data['Animal_Categorey'] = $Category;
-                        $status_code = 200;
-                        $msg = 'Animal_Categorey Updated';
-                    } else {
+                                      else {
                         // إذا لم يتم العثور على الفئة
                         $status_code = 404;
                         $msg = 'Animal_Categorey not found';
@@ -111,7 +111,7 @@ use Throwable;
 
             DB::commit();
 
-            $data['Animal_Categories'] = Categorie_Resource::collection($categories);
+            $data['Animal_Categories'] =$categories;
             $status_code = 200;
             $msg = 'Animal Categories Retrieved Successfully';
 

@@ -71,7 +71,11 @@ class AnimalCategorieController extends Controller
         // تحضير المخرجات للاستجابة
         $output = [];
         if ($result['status_code'] == 200) {
-            $output['Animal_Categories'] = $result['data']['Animal_Categories'];
+            $result_data = $result['data'];
+
+            $paginated = $this->paginate($result_data['Animal_Categories']);
+            $output['Animal_Categories'] =  Categorie_Resource::collection($paginated['data']);
+            $output['meta'] = $paginated['meta'];
         }
 
         // إعادة الاستجابة مع المخرجات والرسالة وحالة الاستجابة

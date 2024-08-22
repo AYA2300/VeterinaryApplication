@@ -17,13 +17,13 @@ class AdminSeeder extends Seeder
     {
         //
           //
-          $breeder=Admin::create([
+          $admin=Admin::create([
             'name' => 'admin',
             'email'=>'admin@gmail.com',
-            'password'=>Hash::make('11111111'),
+            'password'=>Hash::make('12345678'),
             'role'=>'admin'
          ]);
-         $breeder->assignRole(Role::where('name', 'admin')->first());
+         $admin->assignRole(Role::where('name', 'admin')->first());
 
     }
 }

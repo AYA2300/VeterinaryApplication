@@ -23,6 +23,13 @@ use HasApiTokens,FileStorageTrait;
 
         try{
             DB::beginTransaction();
+            $experience_certificate_image=[];
+            if (isset($input_data['experience_certificate_image'])) {
+                foreach ($input_data['experience_certificate_image'] as $image) {
+                    $experience_certificate_image[] = $this->storeFile($image, 'images');
+               }
+               }
+
             $veterinarian=Veterinarian::create([
              'name' => $input_data['name'],
              'password' => Hash::make($input_data['password']),
@@ -31,6 +38,7 @@ use HasApiTokens,FileStorageTrait;
              'role' =>'veterinarian',
              //store img using trait
              'certificate_image'=>$this->storeFile($input_data['certificate_image'],'Veterinarians'),
+              'experience_certificate_image'=> implode(' ; ', $experience_certificate_image),
             ]);
          $veterinarian->assignRole(Role::where('name','veterinarian')->first());
          $auth_token=JWTAuth::fromUser($veterinarian);
@@ -123,6 +131,36 @@ use HasApiTokens,FileStorageTrait;
                 return $result;
 
             }
+
+//refresh
+public function refresh_token()
+{
+    $data = [];
+    $status_code = 400;
+    $msg = '';
+    $result = [];
+
+
+    $auth_token = JWTAuth::refresh(JWTAuth::getToken());
+
+    $data = [
+        'auth_token' => $auth_token,
+    ];
+    $status_code = 200;
+    $msg = 'Auth Token Refreshed';
+
+
+    $result = [
+        'data' => $data,
+        'status_code' => $status_code,
+        'msg' => $msg,
+    ];
+
+    return $result;
+
+
+}
+
 
 }
 

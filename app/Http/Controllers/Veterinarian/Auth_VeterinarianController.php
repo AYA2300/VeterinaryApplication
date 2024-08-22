@@ -25,8 +25,8 @@ class Auth_VeterinarianController extends Controller
      $result=$this->auth_veterian_service->register_veterinarian($input_data);
      $output = [];
      if ($result['status_code'] == 200) {
-         $result_data = $result['data'];
-         // response data preparation:
+        $result_data = $result['data'];
+          // response data preparation:
          $output['auth_token']   = $result_data['auth_token'];
          $output['Veterinarian'] = new Auth_VeterinarianResource($result_data['Veterinarian']);
      }
@@ -65,6 +65,20 @@ class Auth_VeterinarianController extends Controller
 
         return $this->send_response($output, $result['msg'], $result['status_code']);
 
+    }
+
+
+    public function refresh(Request $request)
+    {
+        $result = $this->auth_veterian_service->refresh_token();
+
+        $output = [];
+        if ($result['status_code'] == 200) {
+            $result_data = $result['data'];
+            $output['auth_token'] = $result_data['auth_token'];
+        }
+
+        return $this->send_response($output, $result['msg'], $result['status_code']);
     }
 
 

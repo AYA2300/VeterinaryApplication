@@ -31,7 +31,7 @@ class Register_VeterinarRequest extends FormRequest
             'experience_certificate_image.*' =>"file|image|mimes:png,jpg,jpeg,jfif|max:10000|mimetypes:image/jpeg,image/png,image/jpg,image/jfif",
              'experience_certificate_image'=>'array',
              'role' => ['in:veterinarian'],
-
+            
         ];
     }
 }

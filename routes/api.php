@@ -2,17 +2,18 @@
 
 //use App\Http\Controllers\Categories\AnimalCategorieController;
 
-use App\Http\Controllers\Animal\AnimalCategorieController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-
 use App\Http\Controllers\DashAuth\AuthAdminController;
-use App\Http\Controllers\Application\App_VeterinarianController;
 
 use App\Http\Controllers\Breeder\Auth_BreederController;
+use App\Http\Controllers\Animal\AnimalCategorieController;
+
+use App\Http\Controllers\Application\App_VeterinarianController;
 
 use App\Http\Controllers\Veterinarian\Auth_VeterinarianController;
+use App\Http\Controllers\Dashboard\Medicines\Dash_MedicineController;
 use App\Http\Controllers\Dashboard\Veterinarians\Dash_VeterinariansController;
 
 
@@ -75,9 +76,13 @@ Route::group(['prefix' => 'dash'], function () {
                 Route::get('get/animal_categorey', 'get_categories')->name('get_categories');
                 Route::delete('delete/animal_categorey/{id}', 'delete_categories')->name('delete_categories');
 
+           });
+           //--------section medicines in dash------
+           Route::controller(Dash_MedicineController::class)->group(function () {
+            Route::post('medicines/add-medicine', 'add_medicine')->name('add_medicine');
 
 
-            });
+        });
 
         });
     });

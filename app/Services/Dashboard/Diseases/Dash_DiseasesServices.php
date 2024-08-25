@@ -19,12 +19,14 @@ use Throwable;
 
             try{
                 DB::beginTransaction();
+                $image=isset($input_data['image'])?$this->storeFile($input_data['image'],'Diseases'):'null';
+
                 $disease=Diseases::create([
                     'name'=>$inputdata['name'],
                     'treatment'=>$inputdata['treatment'],
                     'causes'=>$inputdata['causes'],
-                    'symptoms'=>$inputdata['symptoms'],
-                    'image'=>$this->storeFile($inputdata['image'],'Diseases')
+                    'symptoms'=>$inputdata['symptoms']??'null',
+                    'image'=>$image
 
                 ]);
 
@@ -94,7 +96,7 @@ use Throwable;
             // }
 
             $data = $disease->fresh(); // جلب البيانات المحدثة بما في ذلك الأدوية المرتبطة
-            $data= $newData;
+            $data['Diseases']= $disease;
             $status_code = 200;
             $msg = 'Record updated successfully';
         } else {

@@ -45,8 +45,8 @@ class Dash_DiseasesController extends Controller
                     $result_data = $result['data'];
                   //  dd($result_data);
                     // response data preparation:
-                   $output['Disease'] = $result_data;
-                    //$output['Diseases'] = new DiseasesResource($result_data);
+                //    $output['Disease'] = $result_data;
+                    $output['Diseases'] = new DiseasesResource($result_data['Diseases']);
 
 
         }

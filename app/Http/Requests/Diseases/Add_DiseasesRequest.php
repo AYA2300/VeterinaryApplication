@@ -25,8 +25,8 @@ class Add_DiseasesRequest extends FormRequest
             'name'=>'required|string',
             'treatment'=>'required|string',
             'causes'=>'required|string',
-            'symptoms'=>'required|string',
-            'image'=>'required|file|image|mimes:png,jpg,jpeg,jfif|max:10000|mimetypes:image/jpeg,image/png,image/jpg,image/jfif',
+            'symptoms'=>'nullable|string',
+            'image'=>'nullablr|file|image|mimes:png,jpg,jpeg,jfif|max:10000|mimetypes:image/jpeg,image/png,image/jpg,image/jfif',
 
 
         ];

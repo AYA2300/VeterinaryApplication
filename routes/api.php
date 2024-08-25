@@ -93,7 +93,7 @@ Route::group(['prefix' => 'dash'], function () {
                 Route::get('get_disease/{disease}', 'get_disease')->name('dash.get_disease');
                 Route::post('add_disease', 'add_disease')->name('dash.add_disease');
                 Route::post('update_disease/{id}', 'update_disease')->name('dash.update_disease');
-                Route::post('delete_disease/{disease}', 'delete_disease')->name('dash.delete_disease');
+                Route::Delete('delete_disease/{disease}', 'delete_disease')->name('dash.delete_disease');
 
 
             });

@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('treatment');
             $table->longText('causes');
-            $table->longText('symptoms');
-            $table->string('image');
+            $table->longText('symptoms')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

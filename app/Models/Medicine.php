@@ -15,4 +15,8 @@ class Medicine extends Model
         'expiration_date',
         'status'
     ];
+
+    public function diseases(){
+        return $this->belongsToMany(Diseases::class,'disease_medicine');
+    }
 }

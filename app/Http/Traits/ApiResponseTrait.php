@@ -20,7 +20,7 @@ trait ApiResponseTrait
      * @param  int    $status_code  The HTTP status code for the response.
      * @return \Illuminate\Http\JsonResponse The API response in JSON format.
      */
-    public function send_response(mixed $data, string $message, int $status_code)
+    public function send_response(mixed $data='', string $message, int $status_code)
     {
         $success_state = $status_code == 200 ? true : false;
 

@@ -16,9 +16,15 @@ class Medicine extends Model
         'status'
     ];
 
+
+    public function diseases(){
+        return $this->belongsToMany(Diseases::class,'disease_medicine');
+    }
+
     //Relation many to mant with pharmacy
     public function pharmacies(){
         return$this->beLongsToMany(Pharmacy::class,'pharmacy_medicines')->withPivot(['price']);
     }
+
 
 }

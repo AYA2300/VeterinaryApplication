@@ -10,6 +10,9 @@ use App\Http\Controllers\DashAuth\AuthAdminController;
 use App\Http\Controllers\Breeder\Auth_BreederController;
 use App\Http\Controllers\Animal\AnimalCategorieController;
 
+
+use App\Http\Controllers\Application\Diseases\App_DiseasesController;
+use App\Http\Controllers\Dashboard\Diseases\Dash_DiseasesController;
 use App\Http\Controllers\Dashboard\Pharmacy\PharmacyController;
 
 use App\Http\Controllers\Application\App_VeterinarianController;
@@ -113,6 +116,22 @@ Route::group(['prefix' => 'dash'], function () {
         });
 
         });
+           //--------section Diseases in dash------
+
+            Route::controller(Dash_DiseasesController::class)->group(function () {
+                Route::get('get_diseases', 'get_diseases')->name('dash.get_diseases');
+                Route::get('get_disease/{disease}', 'get_disease')->name('dash.get_disease');
+                Route::post('add_disease', 'add_disease')->name('dash.add_disease');
+                Route::post('update_disease/{id}', 'update_disease')->name('dash.update_disease');
+                Route::Delete('delete_disease/{disease}', 'delete_disease')->name('dash.delete_disease');
+
+
+            });
+
+
+
+
+
     });
 });
 //--------------------------------End DashBoaard------------------------
@@ -130,6 +149,10 @@ Route::group(['prefix' => 'veterinarian'], function () {
             //logout
             Route::Post('auth/logout-veterinarian', 'logout_veterinarian')->name('auth.logout');
         });
+
+
+
+
     });
 });
 
@@ -144,6 +167,18 @@ Route::group(['prefix' => 'app'], function () {
         Route::get('get-veterinarian/{veterinarian}','get_veterinarian')->name('app.get_veterinarian');
 
      });
+
+
+
+    Route::controller(App_DiseasesController::class)->group(function () {
+        Route::get('get_diseases', 'get_diseases')->name('app.get_diseases');
+        Route::get('get_disease/{disease}', 'get_disease')->name('app.get_disease');
+
+
+    });
+
+
+
 
      //----------------section Pharmacy----------------
      Route::controller(App_PharmacyController::class)->group(function () {
@@ -183,6 +218,14 @@ Route::group(['prefix' => 'breeder'], function () {
         });
     });
 });
+
+
+
+
+
+
+
+
 
 
 

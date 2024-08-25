@@ -89,6 +89,11 @@ use Throwable;
         $disease = Diseases::find($id);
         if ($disease) {
             $disease->update($newData);
+              if (isset($inputdata['medicines']) && is_array($inputdata['medicines'])) {
+                $disease->medicines()->sync($inputdata['medicines']);
+            }
+
+            $data = $disease->fresh(); // جلب البيانات المحدثة بما في ذلك الأدوية المرتبطة
             $data= $newData;
             $status_code = 200;
             $msg = 'Record updated successfully';

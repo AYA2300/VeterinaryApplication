@@ -116,11 +116,11 @@ return $this->send_response($output, $result['msg'], $result['status_code']);
 return $this->send_response($output, $result['msg'], $result['status_code']);
 
 }
-
-public function addPriceMedicinToPharmacy(AddMedicinePharmacyRequest $request,Pharmacy $pharmacy)
+//add medicin to pharmacy and price
+public function addPriceMedicinToPharmacy(AddMedicinePharmacyRequest $request,Pharmacy $pharmacy,Medicine $medicine)
 {
     $input_data=$request->validated();
-    $result=$this->dash_pharmacy_service->addPriceMedicinToPharmacy($input_data,$pharmacy);
+    $result=$this->dash_pharmacy_service->addPriceMedicinToPharmacy($input_data,$pharmacy,$medicine);
     $output=[];
     if($result['status_code']==200)
     {

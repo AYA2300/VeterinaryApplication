@@ -23,7 +23,7 @@ class AddMedicinePharmacyRequest extends FormRequest
     {
         return [
             //
-        'medicine_id' => 'required|exists:medicines,id',
+        'medicine_id' => 'exists:medicines,id',
          'pharmacy_id' => 'exists:pharmacies,id',
          'price' => 'required|numeric|min:0'
         ];

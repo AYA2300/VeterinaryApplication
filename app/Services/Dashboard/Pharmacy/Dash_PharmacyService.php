@@ -121,11 +121,23 @@ public function get_pharmacy(Pharmacy $pharmacy)
             }
             $pharmacy->update($newData);
             if(isset($input_data['medicine_id'])){
-                $pharmacy_pr=$pharmacy->medicines()->where('medicine_id',$input_data['medicine_id'])->first();
+                $existingPivot=$pharmacy->medicines()->where('medicine_id',$input_data['medicine_id'])->first();
 
                 //only updates the existing row in the pivot table
-                $pharmacy->medicines()->updateExistingPivot($input_data['medicine_id'],['price'=>$input_data['price']??$pharmacy_pr->pivot->price]);
-
+                if ($existingPivot) {
+                    // الكود الذي يحدث تحديث في جدول الربط
+                    $pharmacy->medicines()->syncWithoutDetaching([
+                        $input_data['medicine_id'] => [
+                            'price' => $input_data['price'] ?? $existingPivot->pivot->price
+                        ]
+                    ]);
+                } else {
+                    // إذا لم يتم العثور على سجل الربط، يمكنك إما إنشاء سجل جديد أو تخطي هذه الخطوة
+                    // إنشاء سجل جديد:
+                    $pharmacy->medicines()->attach($input_data['medicine_id'], [
+                        'price' => $input_data['price']??'null'
+                    ]);
+                }
             }
 
             DB::commit();
@@ -185,7 +197,7 @@ public function get_pharmacy(Pharmacy $pharmacy)
     //-------------
     //addMedicinePharmacyPrice by id
 
-       public function addPriceMedicinToPharmacy(array $input_data,Pharmacy $pharmacy)
+       public function addPriceMedicinToPharmacy(array $input_data,Pharmacy $pharmacy,Medicine $medicine)
        {
         $data=[];
         $result=[];
@@ -196,11 +208,11 @@ public function get_pharmacy(Pharmacy $pharmacy)
              Db::beginTransaction();
 
              $add_price=PharmacyMedicine::updateOrCreate( [
-                'medicine_id' => $input_data['medicine_id'],
+                'medicine_id' => $medicine->id,
                 'pharmacy_id' => $pharmacy->id,
             ],
             [
-                'medicine_id' => $input_data['medicine_id'],
+                'medicine_id' => $medicine->id,
                 'pharmacy_id' => $pharmacy->id,
                 'price' => $input_data['price'],
             ]);
@@ -228,5 +240,6 @@ public function get_pharmacy(Pharmacy $pharmacy)
         return $result;
 
        }
+
  }
 ?>

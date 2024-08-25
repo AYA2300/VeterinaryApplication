@@ -82,9 +82,16 @@ Route::group(['prefix' => 'dash'], function () {
            });
            //--------section medicines in dash------
            Route::controller(Dash_MedicineController::class)->group(function () {
-
-            //add pharmacy
+              //all medicines
+              Route::get('medicines/get-medicines', 'get_medicines')->name('dash.get_medicines');
+              //show single medicine
+              Route::get('medicines/get-medicine/{medicine}', 'get_medicine')->name('dash.get_medicine');
+            //add medicine
             Route::post('medicines/add-medicine', 'add_medicine')->name('add_medicine');
+           //update medicine
+           Route::PUT('medicines/update-medicine/{medicine}', 'update_medicine')->name('dash.update_medicine');
+        //delete
+        Route::Delete('medicines/delete-medicine/{medicine}', 'delete_medicine')->name('dash.delete_medicine');
 
 
         });
@@ -100,8 +107,8 @@ Route::group(['prefix' => 'dash'], function () {
             Route::put('pharmacies/update-pharmacy/{pharmacy}', 'update_pharmacy')->name('update_pharmacy');
             //delete
             Route::Delete('pharmacies/delete-pharmacy/{pharmacy}', 'delete_pharmacy')->name('delete_pharmacy');
-            Route::Post('add-Medicin-To-Pharmacy/{pharmacy}', 'addPriceMedicinToPharmacy')->name('addMedicinToPharmacy');
-            Route::Post('add/{pharmacy}', 'addMedicine')->name('addMedicinToPharmacy');
+           //add medicineprice to pharmacy
+            Route::Post('add-Medicin-To-Pharmacy/{pharmacy}/{medicine}', 'addPriceMedicinToPharmacy')->name('addMedicinToPharmacy');
 
         });
 
@@ -149,9 +156,9 @@ Route::group(['prefix' => 'app'], function () {
 
              //-----------section medicine----------------------
              Route::controller(App_MedicineController::class)->group(function () {
-                //all pharmacies
+                //all medicines
                 Route::get('medicines/get-medicines', 'get_medicines')->name('app.get_medicines');
-                //show
+                //show single medicine
                 Route::get('medicines/get-medicine/{medicine}', 'get_medicine')->name('app.get_medicine');
 
                      });

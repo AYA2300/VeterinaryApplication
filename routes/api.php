@@ -10,10 +10,13 @@ use App\Http\Controllers\DashAuth\AuthAdminController;
 use App\Http\Controllers\Breeder\Auth_BreederController;
 use App\Http\Controllers\Animal\AnimalCategorieController;
 
-use App\Http\Controllers\Application\App_VeterinarianController;
+use App\Http\Controllers\Dashboard\Pharmacy\PharmacyController;
 
+use App\Http\Controllers\Application\App_VeterinarianController;
 use App\Http\Controllers\Veterinarian\Auth_VeterinarianController;
+use App\Http\Controllers\Application\Pharmacy\App_PharmacyController;
 use App\Http\Controllers\Dashboard\Medicines\Dash_MedicineController;
+use App\Http\Controllers\Application\Medicines\App_MedicineController;
 use App\Http\Controllers\Dashboard\Veterinarians\Dash_VeterinariansController;
 
 
@@ -79,8 +82,26 @@ Route::group(['prefix' => 'dash'], function () {
            });
            //--------section medicines in dash------
            Route::controller(Dash_MedicineController::class)->group(function () {
+
+            //add pharmacy
             Route::post('medicines/add-medicine', 'add_medicine')->name('add_medicine');
 
+
+        });
+        //-----------------section pharmacy------------------
+        Route::controller(PharmacyController::class)->group(function () {
+            //add
+            Route::post('pharmacies/add-pharmacy', 'add_pharmacy')->name('add_pharmacy');
+           //get all
+           Route::get('pharmacies/get-pharmacies', 'get_pharmacies')->name('get_pharmacies');
+           //show
+           Route::get('pharmacies/get-pharmacy/{pharmacy}', 'get_pharmacy')->name('get_pharmacy');
+            //update
+            Route::put('pharmacies/update-pharmacy/{pharmacy}', 'update_pharmacy')->name('update_pharmacy');
+            //delete
+            Route::Delete('pharmacies/delete-pharmacy/{pharmacy}', 'delete_pharmacy')->name('delete_pharmacy');
+            Route::Post('add-Medicin-To-Pharmacy/{pharmacy}', 'addPriceMedicinToPharmacy')->name('addMedicinToPharmacy');
+            Route::Post('add/{pharmacy}', 'addMedicine')->name('addMedicinToPharmacy');
 
         });
 
@@ -116,6 +137,24 @@ Route::group(['prefix' => 'app'], function () {
         Route::get('get-veterinarian/{veterinarian}','get_veterinarian')->name('app.get_veterinarian');
 
      });
+
+     //----------------section Pharmacy----------------
+     Route::controller(App_PharmacyController::class)->group(function () {
+        //all pharmacies
+        Route::get('pharmacies/get-pharmacies', 'get_pharmacies')->name('app.get_pharmacies');
+        //show
+        Route::get('pharmacies/get-pharmacy/{pharmacy}', 'get_pharmacy')->name('app.get_pharmacy');
+
+             });
+
+             //-----------section medicine----------------------
+             Route::controller(App_MedicineController::class)->group(function () {
+                //all pharmacies
+                Route::get('medicines/get-medicines', 'get_medicines')->name('app.get_medicines');
+                //show
+                Route::get('medicines/get-medicine/{medicine}', 'get_medicine')->name('app.get_medicine');
+
+                     });
 
 });
 

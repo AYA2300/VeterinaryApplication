@@ -15,4 +15,10 @@ class Medicine extends Model
         'expiration_date',
         'status'
     ];
+
+    //Relation many to mant with pharmacy
+    public function pharmacies(){
+        return$this->beLongsToMany(Pharmacy::class,'pharmacy_medicines')->withPivot(['price']);
+    }
+
 }

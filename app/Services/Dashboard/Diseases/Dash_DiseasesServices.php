@@ -30,9 +30,11 @@ use Throwable;
 
                 ]);
 
-                // if (isset($inputdata['medicines']) && is_array($inputdata['medicines'])) {
-                //     $disease->medicines()->attach($inputdata['medicines']);
-                // }
+                if (isset($inputdata['medicine_id']) || is_array(isset($inputdata['medicine_id']))) {
+                   // dd($inputdata['medicine_id']);
+
+                    $disease->medicines()->attach($inputdata['medicine_id']);
+                }
 
                 DB::commit();
                 $data['Diseases']=$disease;
@@ -90,12 +92,16 @@ use Throwable;
 
         $disease = Diseases::find($id);
         if ($disease) {
-            $disease->update($newData);
-            //   if (isset($inputdata['medicines']) && is_array($inputdata['medicines'])) {
-            //     $disease->medicines()->sync($inputdata['medicines']);
-            // }
 
-            $data = $disease->fresh(); // جلب البيانات المحدثة بما في ذلك الأدوية المرتبطة
+            if (isset($inputdata['medicine_id']) || is_array(isset($inputdata['medicine_id']))) {
+                $disease->medicines()->sync($inputdata['medicine_id']);
+            }
+            // $newData = $disease->fresh();
+
+            $disease->update($newData);
+
+
+             // جلب البيانات المحدثة بما في ذلك الأدوية المرتبطة
             $data['Diseases']= $disease;
             $status_code = 200;
             $msg = 'Record updated successfully';
@@ -173,8 +179,13 @@ use Throwable;
     }
 
     public function delete_Disease($disease){
+        if($disease){
+            if($disease->medicines){
+                $disease->medicines()->detach();
+            }
+            $disease->delete();
 
-        $disease->delete();
+        }
         $status_code = 200;
         $msg = 'Animal Diseases Deleted Successfully';
         return [

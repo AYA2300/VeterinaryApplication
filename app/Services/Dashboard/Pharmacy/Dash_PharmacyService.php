@@ -7,6 +7,7 @@ use App\Models\PharmacyMedicine;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Resources\Pharmacy\PharmacyResource;
+use Throwable;
 
  class Dash_PharmacyService{
 

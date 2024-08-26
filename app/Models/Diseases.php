@@ -9,6 +9,7 @@ class Diseases extends Model
 {
     use HasFactory;
     protected $fillable=[
+
         'name',
         'treatment',
         'causes',

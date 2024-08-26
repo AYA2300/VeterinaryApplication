@@ -30,7 +30,7 @@ use Throwable;
 
                 ]);
 
-                if (isset($inputdata['medicine_id']) || is_array($inputdata['medicine_id'])) {
+                if (isset($inputdata['medicine_id']) || is_array(isset($inputdata['medicine_id']))) {
                    // dd($inputdata['medicine_id']);
 
                     $disease->medicines()->attach($inputdata['medicine_id']);
@@ -93,7 +93,7 @@ use Throwable;
         $disease = Diseases::find($id);
         if ($disease) {
 
-            if (isset($inputdata['medicine_id']) || is_array($inputdata['medicine_id'])) {
+            if (isset($inputdata['medicine_id']) || is_array(isset($inputdata['medicine_id']))) {
                 $disease->medicines()->sync($inputdata['medicine_id']);
             }
             // $newData = $disease->fresh();
@@ -179,8 +179,13 @@ use Throwable;
     }
 
     public function delete_Disease($disease){
+        if($disease){
+            if($disease->medicines){
+                $disease->medicines()->detach();
+            }
+            $disease->delete();
 
-        $disease->delete();
+        }
         $status_code = 200;
         $msg = 'Animal Diseases Deleted Successfully';
         return [

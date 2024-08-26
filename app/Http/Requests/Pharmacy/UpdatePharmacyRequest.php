@@ -28,8 +28,10 @@ class UpdatePharmacyRequest extends FormRequest
             'open_time'=>'nullable|date_format:H:i',
             'close_time'=>'nullable|date_format:H:i||after:open_time',
             'address'=>'nullable|string',
-            'medicine_id' => 'nullable|array|exists:medicines,id',
-            'price' => 'nullable',
+            'medicines' => 'nullable|array',
+            'medicines.*.medicine_id' => 'required_with:medicines|integer|exists:medicines,id',
+            'medicines.*.price' => 'required_with:medicines|numeric|min:0',
+
         ];
     }
 }

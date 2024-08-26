@@ -120,25 +120,19 @@ public function get_pharmacy(Pharmacy $pharmacy)
                 $pharmacy->address=$input_data['address'];
             }
             $pharmacy->update($newData);
-            if(isset($input_data['medicine_id'])){
-                $existingPivot=$pharmacy->medicines()->where('medicine_id',$input_data['medicine_id'])->first();
+            if (isset($input_data['medicines']) && is_array($input_data['medicines'])) {
+                $medicines = [];
 
-                //only updates the existing row in the pivot table
-                if ($existingPivot) {
-                    // الكود الذي يحدث تحديث في جدول الربط
-                    $pharmacy->medicines()->syncWithoutDetaching([
-                        $input_data['medicine_id'] => [
-                            'price' => $input_data['price'] ?? $existingPivot->pivot->price
-                        ]
-                    ]);
-                } else {
-                    // إذا لم يتم العثور على سجل الربط، يمكنك إما إنشاء سجل جديد أو تخطي هذه الخطوة
-                    // إنشاء سجل جديد:
-                    $pharmacy->medicines()->attach($input_data['medicine_id'], [
-                        'price' => $input_data['price']??'null'
-                    ]);
+                foreach ($input_data['medicines'] as $medicine) {
+                    if (isset($medicine['medicine_id']) && isset($medicine['price'])) {
+                        $medicines[$medicine['medicine_id']] = ['price' => $medicine['price']];
+                    }
                 }
+
+                // مزامنة الأدوية مع الصيدلية بدون حذف العلاقات السابقة
+                $pharmacy->medicines()->syncWithoutDetaching($medicines);
             }
+
 
             DB::commit();
 

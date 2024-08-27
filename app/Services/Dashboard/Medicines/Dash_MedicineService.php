@@ -69,7 +69,11 @@ class Dash_MedicineService
             $medicine=Medicine::create([
              'name' =>$input_data['name'],
              'image'=>$image,
-               'expiration_date'=>$input_data['expiration_date']
+             'category'=>$input_data['category'],
+             'type_of_medicine'=>$input_data['type_of_medicine'],
+             'usage'=>$input_data['usage']??'null',
+             'status' => $input_data['status']??'available',
+             'price'=>$input_data['price']??' null'
             ]);
             DB::commit();
             $msg='تم اضافة دواء';
@@ -108,12 +112,26 @@ class Dash_MedicineService
              if(isset($input_data['name'])){
                 $newData['name']=$input_data['name'];
              }
+             if(isset($input_data['price'])){
+                $newData['price']=$input_data['price'];
+             }
              if(isset($input_data['image'])){
                 $newData['image']=$this->storeFile($input_data['image'],'medicines')??$medicine->image;
              }
-             if(isset($input_data['expiration_date'])){
-                $newData['expiration_date']=$input_data['expiration_date'];
+
+             if(isset($input_data['category'])){
+                $newData['category']=$input_data['category'];
              }
+             if(isset($input_data['type_of_medicine'])){
+                $newData['type_of_medicine']=$input_data['type_of_medicine'];
+             }
+             if(isset($input_data['usage'])){
+                $newData['usage']=$input_data['usage'];
+             }
+             if(isset($input_data['status'])){
+                $newData['status']=$input_data['status'];
+             }
+
              $medicine->update($newData);
              DB::commit();
              $msg='تم تعديل الدواء بنجاح';

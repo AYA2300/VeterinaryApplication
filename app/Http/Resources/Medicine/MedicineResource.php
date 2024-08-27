@@ -19,8 +19,12 @@ class MedicineResource extends JsonResource
             'id' => $this->id,
             'name' =>$this->name,
             'image'=>$this->image,
-            'expiration_date' =>$this->expiration_date,
-            'status' => $this->status??'active',
+            'status' => $this->status??'available',
+            'category'=>$this->category,
+             'type_of_medicine' =>$this->type_of_medicine,
+             'usage' =>$this->usage,
+             'price'=>$this->price
+
         ];
     }
 }

@@ -25,8 +25,11 @@ class CreateMedicineRequest extends FormRequest
             //
             'name'=>'required|string',
             'image'=>'nullable|file|image|mimes:png,jpg,jpeg,jfif|max:10000|mimetypes:image/jpeg,image/png,image/jpg,image/jfif',
-            'expiration_date' =>'required|date|after_or_equal:today',
-            'status'=>['in:active,expired']
+            'status'=>'nullable|in:available,unavailable',
+            'category'=>'string|required',
+            'type_of_medicine'=>'string',
+            'usage'=>'string|nullable',
+            'price' => 'nullable|numeric|min:0'
         ];
     }
 

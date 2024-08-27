@@ -25,8 +25,13 @@ class UpdateMedicineRequest extends FormRequest
             //
             'name'=>'nullable|string',
             'image'=>'nullable|file|image|mimes:png,jpg,jpeg,jfif|max:10000|mimetypes:image/jpeg,image/png,image/jpg,image/jfif',
-            'expiration_date' =>'nullable|date|after_or_equal:today',
-              'status'=>['in:active,expired']
+            'category'=>'string|nullable',
+            'type_of_medicine'=>'nullable|string',
+            'usage'=>'string|nullable' ,
+            'status'=>'nullable|in:available,unavailable',
+            'price' => 'nullable|numeric|min:0'
+
+
 
         ];
 

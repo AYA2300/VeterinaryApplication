@@ -15,8 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('image')->nullable();
-            $table->date('expiration_date');
-            $table->enum('status',['active','expired'])->default('active')->nullable();
+            $table->Text('usage')->nullable();
+            $table->string('category');
+            $table->string('price')->nullable();
+            $table->string('type_of_medicine');
+            $table->enum('status',['available','unavailable'])->default('available')->nullable();
             $table->timestamps();
         });
     }

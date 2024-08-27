@@ -12,7 +12,10 @@ class Medicine extends Model
     [
         'name',
         'image',
-        'expiration_date',
+        'usage',
+         'category',
+         'type_of_medicine',
+         'price',
         'status'
     ];
 

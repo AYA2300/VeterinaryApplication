@@ -11,12 +11,13 @@ use App\Http\Controllers\Breeder\Auth_BreederController;
 use App\Http\Controllers\Animal\AnimalCategorieController;
 
 
-use App\Http\Controllers\Application\Diseases\App_DiseasesController;
-use App\Http\Controllers\Dashboard\Diseases\Dash_DiseasesController;
 use App\Http\Controllers\Dashboard\Pharmacy\PharmacyController;
-
 use App\Http\Controllers\Application\App_VeterinarianController;
 use App\Http\Controllers\Veterinarian\Auth_VeterinarianController;
+
+use App\Http\Controllers\Application\Mesaages\App_MessageController;
+use App\Http\Controllers\Dashboard\Diseases\Dash_DiseasesController;
+use App\Http\Controllers\Application\Diseases\App_DiseasesController;
 use App\Http\Controllers\Application\Pharmacy\App_PharmacyController;
 use App\Http\Controllers\Dashboard\Medicines\Dash_MedicineController;
 use App\Http\Controllers\Application\Medicines\App_MedicineController;
@@ -198,6 +199,19 @@ Route::group(['prefix' => 'app'], function () {
 
                      });
 
+                     //chat
+                     Route::group(['middleware' => ['auth:breeder,veterinarian']], function () {
+
+                        Route::group(['middleware' => ['role:breeder|veterinarian']], function () {
+                            Route::controller(App_MessageController::class)->group(function () {
+                            Route::post('send-message/{receiver_id}', 'send_message');
+                            Route::get('get-messages/{conversation}', 'show_messages');
+
+
+                            });
+                        });
+
+});
 });
 
 

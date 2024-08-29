@@ -55,7 +55,7 @@ class Breeder  extends Authenticatable implements JWTSubject
       //Relations
       public function conversations()
       {
-         return $this->hasMany(Conversation::class,'brreder_id');
+         return $this->hasMany(Conversation::class,'breeder_id');
 
       }
       //morph type send if vet

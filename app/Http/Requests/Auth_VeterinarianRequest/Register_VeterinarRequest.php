@@ -27,6 +27,7 @@ class Register_VeterinarRequest extends FormRequest
             'password'=>'required|string|min:6|max:8',
             'confirm_password' => 'min:6|same:password',
             'email' =>'required|unique:veterinarians,email',
+            'photo'=>'nullable|file|image|mimes:png,jpg,jpeg,jfif|max:10000|mimetypes:image/jpeg,image/png,image/jpg,image/jfif',
             'certificate_image'=>'required|file|image|mimes:png,jpg,jpeg,jfif|max:10000|mimetypes:image/jpeg,image/png,image/jpg,image/jfif',
             'phone_number'=>'required',
             'Specialization'=>'nullable|string',

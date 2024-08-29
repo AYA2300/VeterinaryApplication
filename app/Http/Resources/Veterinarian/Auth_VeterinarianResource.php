@@ -22,6 +22,8 @@ class Auth_VeterinarianResource extends JsonResource
             'experience_certificate_image'=>$this->experience_certificate_image,
             'phone_number'=>$this->phone_number,
             'Specialization'=>$this->Specialization,
+            'photo'=>$this->photo,
+
         ];
     }
 }

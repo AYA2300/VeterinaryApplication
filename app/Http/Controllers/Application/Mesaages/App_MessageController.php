@@ -1,116 +1,57 @@
 <?php
-
 namespace App\Http\Controllers\Application\Mesaages;
-
-use Storage;
-use Throwable;
-use App\Models\Breeder;
 use App\Models\Conversation;
-use App\Models\Veterinarian;
+
 use Illuminate\Http\Request;
-use App\Events\SendMessageEvent;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Traits\FileStorageTrait;
+use App\Http\Traits\ApiResponseTrait;
 use App\Http\Resources\Breeder\Auth_BreederResource;
 use App\Http\Resources\MessagesChat\MessageResource;
 use App\Http\Requests\MessagesChat\App_CreateMesaageRequest;
+use App\Services\Applications\ChatPusher\App_MessageService;
 
 class App_MessageController extends Controller
 {
     //
-    use FileStorageTrait;
+    use ApiResponseTrait;
+
+    public function __construct(protected App_MessageService $app_message_service){
+
+    }
 
 
 
-    //send Message
+    //send Message btewen breeder and doctor
 
     public function send_message(App_CreateMesaageRequest $request,$receiver_id)
     {
+          $input_data=$request->validated();
+          $result=$this->app_message_service->send_message($input_data,$receiver_id);
+          $output=[];
+          if($result['status_code'] == 200){
 
-         try{
-          DB::beginTransaction();
+          $result_data = $result['data'];
+          // response data preparation:
+          $output['message'] = new MessageResource ($result_data['message']);
 
-          $sender = null;
-          $receiver = null;
-          $sendType = null;
-               if(Auth::guard('breeder')->check()){
-                 $sender=Auth::guard('breeder')->user();
-                 $receiver=Veterinarian::Where('id',$receiver_id)->first();
-                 $sendType='breeder';
-
-                }elseif (Auth::guard('veterinarian')->check()) {
-                    $sender = Auth::guard('veterinarian')->user();
-                    $receiver = Breeder::find($receiver_id);
-                    $sendType = 'veterinary';
-         }
-          // التحقق من وجود المستخدم والمستقبل
-                    if (!$sender || !$receiver) {
-                    return response()->json(['error' => 'Invalid sender or receiver'], 400);
-                 }
-               $conversation=Conversation::UpdateOrCreate([
-               "{$sendType}_id" => $sender->id,
-                ($sendType=='breeder'?'veterinary_id':'breeder_id') => $receiver->id,
-                  ]);
-                  if ($request->type == 'text') {
-                    $messageContent = $request->message;
-                } elseif ($request->type == 'audio') {
-                    $path = $request->file('audio')->store('public/audios')??null;
-                    $messageContent = Storage::url($path);
-                } elseif ($request->type == 'image') {
-                    $messageContent =$this->storeFile($request->image,'chats')??null;
-
-                }
-
-                  $message=$sender->messages()->create([
-                   'conversation_id' =>$conversation->id,
-                   'type' => $request->type,
-                   'message'=>$messageContent
-                  ]);
-                  $conversation_id=$conversation->id;
-                  \broadcast(new SendMessageEvent($message, $conversation_id))->toOthers();
-                  DB::commit();
-                  return response()->json([
-                   'message' => new MessageResource($message)
-                  ]);
-        }
-         catch(Throwable $th){
-            DB::rollBack();
-            Log::debug($th);
-            $msg = 'error ' . $th->getMessage();
-           return response()->json([
-            'status'=> 'error'
-           ]);
-        }
+}
+          return $this->send_response($output, $result['msg'], $result['status_code']);
 
                 }
 
                 public function show_messages(Conversation $conversation)
                 {
-                    $user = null;
+                    $result=$this->app_message_service->show_messages($conversation);
+                    $output=[];
+                    if($result['status_code'] == 200){
 
-                    if (Auth::guard('breeder')->check()) {
-                        $user = Auth::guard('breeder')->user();
-                        $isAuthorized = $conversation->breeder_id === $user->id;
-                    } elseif (Auth::guard('veterinarian')->check()) {
-                        $user = Auth::guard('veterinarian')->user();
-                        $isAuthorized = $conversation->veterinary_id === $user->id;
-                    } else {
-                        return response()->json(['auther' => 'Unauthorized'], 403);
-                    }
+                    $result_data = $result['data'];
+                    // response data preparation:
+                    $output['messages'] =  MessageResource::collection ($result_data['messages']);
 
-                    // إذا لم يكن المستخدم جزءًا من المحادثة
-                    if (!$isAuthorized) {
-                        return response()->json(['auther' => 'Unauthorized'], 403);
-                    }
-                    // جلب الرسائل من المحادثة
-                    $messages = $conversation->messages;
+          }
+                    return $this->send_response($output, $result['msg'], $result['status_code']);
 
-                    return response()->json([
-                        'message' =>  MessageResource::Collection($messages),
-
-                    ]);
                 }
 }

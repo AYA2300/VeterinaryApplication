@@ -22,6 +22,7 @@ class Veterinarian extends Authenticatable implements JWTSubject
         'Specialization',
         'phone_number',
         'confirm_password',
+        'photo',
         'email',
         'password'
     ];
@@ -56,4 +57,17 @@ class Veterinarian extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    //Relations
+     public function conversations()
+     {
+        return $this->hasMany(Conversation::class,'veterinary_id');
+
+     }
+     //morph type send if vet
+
+       public function messages()
+       {
+        return $this->morphMany(Message::class,'messageable_sender');
+       }
 }

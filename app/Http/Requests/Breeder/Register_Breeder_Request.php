@@ -28,7 +28,7 @@ class Register_Breeder_Request extends FormRequest
             'phone_number'=>'required|string',
             'region'=>'string|max:255',
             'role'=>['in:breeder'],
-            'category_id'=>'required'
+            'category_id'=>'exists:animal_categories,id'
         ];
     }
 }

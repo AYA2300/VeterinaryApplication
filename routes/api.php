@@ -21,6 +21,7 @@ use App\Http\Controllers\Application\Diseases\App_DiseasesController;
 use App\Http\Controllers\Application\Pharmacy\App_PharmacyController;
 use App\Http\Controllers\Dashboard\Medicines\Dash_MedicineController;
 use App\Http\Controllers\Application\Medicines\App_MedicineController;
+use App\Http\Controllers\Dashboard\Feeds\Dash_FeedController;
 use App\Http\Controllers\Dashboard\Veterinarians\Dash_VeterinariansController;
 
 
@@ -99,6 +100,25 @@ Route::group(['prefix' => 'dash'], function () {
 
 
         });
+
+        Route::controller(Dash_FeedController::class)->group(function () {
+            //all feeds
+            Route::get('feeds/get-feeds', 'get_feeds')->name('dash.get_feeds');
+            //show single medicine
+            Route::get('feeds/get-feed/{feed}', 'get_feed')->name('dash.get_feed');
+          //add feed
+          Route::post('feeds/add-feed', 'add_Feed')->name('add_feed');
+         //update feed
+         Route::PUT('feeds/update-feed/{feed}', 'update_Feed')->name('dash.update_feed');
+      //delete
+      Route::Delete('feeds/delete-feed/{feed}', 'delete_feed')->name('dash.delete_feed');
+
+
+      });
+
+
+
+
         //-----------------section pharmacy------------------
         Route::controller(PharmacyController::class)->group(function () {
             //add

@@ -24,6 +24,7 @@ class MessageResource extends JsonResource
             'breeder_name'=> $this->conversation->breeder->name,
              'veterinary_id' => $this->conversation->veterinary_id,
              'veterinary_name'=>$this->conversation->Veterinarian->name,
+
         ];
     }
 }

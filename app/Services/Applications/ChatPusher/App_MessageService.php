@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\FileStorageTrait;
+use App\Models\Breeder;
 use Illuminate\Support\Facades\Storage;
+use Throwable;
 
  class App_MessageService
  {

@@ -20,9 +20,10 @@ class MessageResource extends JsonResource
             'id' => $this->id,
             'message'=> $this->message,
             'type' => $this->type,
-             'breeder' => new Auth_BreederResource($this->conversation->breeder),
-             'veterinary' => new Auth_VeterinarianResource($this->conversation->Veterinarian)
-
+            'breeder_id' => $this->conversation->breeder_id,
+            'breeder_name'=> $this->conversation->breeder->name,
+             'veterinary_id' => $this->conversation->veterinary_id,
+             'veterinary_name'=>$this->conversation->Veterinarian->name,
         ];
     }
 }

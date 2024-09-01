@@ -83,7 +83,12 @@ use Throwable;
 
         }
         $result = [
-            'data' => $data,
+            'data' =>[ $data,
+            'sender_id'=>$sender->id,
+            'sender_name'=>$sender->name,
+             'receiver_id'=>$receiver->id,
+             'receiver_name'=>$receiver->name],
+
             'status_code' => $status_code,
             'msg' => $msg,
         ];
@@ -107,10 +112,16 @@ use Throwable;
         if (Auth::guard('breeder')->check()) {
             $user = Auth::guard('breeder')->user();
             $isAuthorized = $conversation->breeder_id === $user->id;
+            $receiver_id = $conversation->veterinary_id;
+            $receiver_name = $conversation->Veterinarian->name;
 
         } elseif (Auth::guard('veterinarian')->check()) {
             $user = Auth::guard('veterinarian')->user();
             $isAuthorized = $conversation->veterinary_id === $user->id;
+            $receiver_id = $conversation->breeder_id;
+            $receiver_name = $conversation->breeder->name;
+
+
         } else {
             $status_code=403;
            $msg='Unauthorized';
@@ -132,7 +143,14 @@ use Throwable;
 
 
         $result = [
-            'data' => $data,
+            'data' =>[ $data,
+            'sender_id'=>$user->id,
+            'sender_name'=>$user->name,
+             'receiver_id'=>$receiver_id,
+             'receiver_name'=>$receiver_name,
+
+            ],
+
             'status_code' => $status_code,
             'msg' => $msg,
         ];

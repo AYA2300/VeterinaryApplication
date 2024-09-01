@@ -33,10 +33,10 @@ class App_MessageController extends Controller
 
           $result_data = $result['data'];
           // response data preparation:
-          $output['message'] = new MessageResource ($result_data['message']);
+         // $output['message'] = new MessageResource ($result_data['message']);
 
 }
-          return $this->send_response($output, $result['msg'], $result['status_code']);
+          return $this->send_response($result_data, $result['msg'], $result['status_code']);
 
                 }
 
@@ -48,10 +48,10 @@ class App_MessageController extends Controller
 
                     $result_data = $result['data'];
                     // response data preparation:
-                    $output['messages'] =  MessageResource::collection ($result_data['messages']);
+                  //  $output['messages'] =  MessageResource::collection ($result_data['messages'],$result_data['sender_id']);
 
           }
-                    return $this->send_response($output, $result['msg'], $result['status_code']);
+                    return $this->send_response($result_data, $result['msg'], $result['status_code']);
 
                 }
 }

@@ -19,7 +19,7 @@ use Throwable;
 
             try{
                 DB::beginTransaction();
-                $image=isset($input_data['image'])?$this->storeFile($input_data['image'],'Diseases'):'null';
+                $image=isset($inputdata['image'])?$this->storeFile($inputdata['image'],'Diseases'):'null';
 
                 $disease=Diseases::create([
                     'name'=>$inputdata['name'],
@@ -126,13 +126,6 @@ use Throwable;
 
     return $result;
 }
-
-
-
-
-
-
-
 
 
 

@@ -9,8 +9,7 @@ use App\Http\Controllers\DashAuth\AuthAdminController;
 
 use App\Http\Controllers\Breeder\Auth_BreederController;
 use App\Http\Controllers\Animal\AnimalCategorieController;
-
-
+use App\Http\Controllers\Application\App_BreederController;
 use App\Http\Controllers\Dashboard\Pharmacy\PharmacyController;
 use App\Http\Controllers\Application\App_VeterinarianController;
 use App\Http\Controllers\Veterinarian\Auth_VeterinarianController;
@@ -188,6 +187,15 @@ Route::group(['prefix' => 'app'], function () {
         Route::get('get-veterinarian/{veterinarian}','get_veterinarian')->name('app.get_veterinarian');
 
      });
+
+ //section Breeder
+     Route::controller(App_BreederController::class)->group(function () {
+        //gat all
+                Route::get('get-Breeders','get_Breeders')->name('app.get_Breeders');
+               //get single
+                Route::get('get-Breeder/{Breeder}','get_Breeder')->name('app.get_Breeder');
+
+             });
 
 
 

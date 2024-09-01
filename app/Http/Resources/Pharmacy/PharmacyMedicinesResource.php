@@ -18,9 +18,22 @@ class PharmacyMedicinesResource extends JsonResource
     public function toArray(Request $request): array
     {
 
+        $medicines = $this->medicines->map(function ($medicine) {
+            return [
+                 'medicines'=> new MedicineResource($medicine),
+                'price' => $medicine->pivot->price,
+            ];
+        });
+
+
         return [
-           'medicine'=>new MedicineResource($this->medicine),
-           'price' =>$this->price
+            'id' =>$this->id,
+            'owner'=>$this->owner,
+            'name' => $this->name,
+            'open_time' => $this->open_time->format("H:i A"),
+            'close_time' => $this->close_time->format("H:i A"),
+            'address' => $this->address,
+            'medicines' =>$medicines
         ];
     }
 }

@@ -41,7 +41,7 @@ use HasApiTokens,FileStorageTrait;
               'experience_certificate_image'=> implode(' ; ', $experience_certificate_image),
               'photo' => $this->storeFile($input_data['photo'],'photoDoctor')??'null',
               'Specialization'=>$input_data['Specialization']??'null',
-              'phone_number' =>$input_data['phone_number']
+              'Address' =>$input_data['Address']??'null',
             ]);
          $veterinarian->assignRole(Role::where('name','veterinarian')->first());
          $auth_token=JWTAuth::fromUser($veterinarian);

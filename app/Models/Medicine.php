@@ -16,6 +16,8 @@ class Medicine extends Model
          'category',
          'type_of_medicine',
          'price',
+         'Base_price',
+         'Composition',
         'status'
     ];
 

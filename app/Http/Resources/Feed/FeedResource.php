@@ -21,6 +21,8 @@ class FeedResource extends JsonResource
             'Detailes'=>$this->Detailes,
             'price'=>$this->price,
             'image'=>$this->image,
+            'base_price' => $this->Base_price,
+
 
 
         ];

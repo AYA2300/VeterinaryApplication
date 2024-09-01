@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('image')->nullable();
             $table->Text('usage')->nullable();
+            $table->Text('Composition')->nullable();
+            $table->string('Base_price')->nullable();
             $table->string('category');
             $table->string('price')->nullable();
             $table->string('type_of_medicine');

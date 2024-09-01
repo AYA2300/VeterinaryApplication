@@ -26,6 +26,8 @@ class  Dash_FeedService{
                 'name'=>$inputdata['name'],
                 'type'=>$inputdata['type'],
                 'Detailes'=>$inputdata['Detailes'],
+                'Base_price' => $input_data['Base_price']??'null',
+
                 'price'=>$inputdata['price'],
                 'image'=>$image
 
@@ -73,6 +75,9 @@ class  Dash_FeedService{
                     }
                     if (isset($inputdata['Detailes'])) {
                         $newData['Detailes'] = $inputdata['Detailes'];
+                    }
+                    if (isset($inputdata['Base_price'])) {
+                        $newData['Base_price'] = $inputdata['Base_price'];
                     }
                     if (isset($inputdata['price'])) {
                         $newData['price'] = $inputdata['price'];

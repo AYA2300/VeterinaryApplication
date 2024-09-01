@@ -25,6 +25,7 @@ class Edit_FeedRequest extends FormRequest
             'name'=>'nullable|string',
             'type'=>'nullable|string',
             'Detailes'=>'nullable|string|min:4',
+            'Base_price'=>'nullable',
             'price'=>'nullable|string',
             'image'=>'nullable|file|image|mimes:png,jpg',
         ];

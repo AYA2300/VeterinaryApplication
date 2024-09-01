@@ -73,7 +73,10 @@ class Dash_MedicineService
              'type_of_medicine'=>$input_data['type_of_medicine'],
              'usage'=>$input_data['usage']??'null',
              'status' => $input_data['status']??'available',
-             'price'=>$input_data['price']??' null'
+             'price'=>$input_data['price']??' null',
+             'Base_price' => $input_data['Base_price']??'null',
+             'Composition' => $input_data['Composition']??'null',
+
             ]);
             DB::commit();
             $msg='تم اضافة دواء';
@@ -114,6 +117,12 @@ class Dash_MedicineService
              }
              if(isset($input_data['price'])){
                 $newData['price']=$input_data['price'];
+             }
+             if(isset($input_data['Base_price'])){
+                $newData['Base_price']=$input_data['Base_price'];
+             }
+             if(isset($input_data['Composition'])){
+                $newData['Composition']=$input_data['Composition'];
              }
              if(isset($input_data['image'])){
                 $newData['image']=$this->storeFile($input_data['image'],'medicines')??$medicine->image;

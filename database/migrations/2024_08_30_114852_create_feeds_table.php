@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('image');
             $table->text('Detailes');
             $table->string('price');
+            $table->string('Base_price')->nullable();
             $table->timestamps();
         });
     }

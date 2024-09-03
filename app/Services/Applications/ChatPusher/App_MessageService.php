@@ -159,6 +159,86 @@ use Throwable;
 
     }
 
+    public function show_message($id)
+    {
+        $result = [];
+        $data = [];
+        $status_code = 400;
+        $msg = '';
+        $user = null;
+
+        if (Auth::guard('breeder')->check()) {
+            $user = Auth::guard('breeder')->user();
+            $vet = Veterinarian::find($id);
+
+            // البحث عن المحادثة بين المربي والطبيب البيطري
+            $conversation = Conversation::where('breeder_id', $user->id)
+                                        ->where('veterinary_id', $vet->id)
+                                        ->first();
+            if (!$conversation) {
+                $status_code = 404;
+                $msg = 'Conversation not found';
+                return response()->json(['status_code' => $status_code, 'msg' => $msg], $status_code);
+            }
+
+            $isAuthorized = $conversation->breeder_id === $user->id;
+            $receiver_id = $conversation->veterinary_id;
+            $receiver_name = $vet->name;
+
+        } elseif (Auth::guard('veterinarian')->check()) {
+            $user = Auth::guard('veterinarian')->user();
+            $breeder = Breeder::find($id);
+
+            // البحث عن المحادثة بين الطبيب البيطري والمربي
+            $conversation = Conversation::where('veterinary_id', $user->id)
+                                        ->where('breeder_id', $breeder->id)
+                                        ->first();
+            if (!$conversation) {
+                $status_code = 404;
+                $msg = 'Conversation not found';
+                return response()->json(['status_code' => $status_code, 'msg' => $msg], $status_code);
+            }
+
+            $isAuthorized = $conversation->veterinary_id === $user->id;
+            $receiver_id = $conversation->breeder_id;
+            $receiver_name = $breeder->name;
+        } else {
+            $status_code = 403;
+            $msg = 'Unauthorized';
+            return response()->json(['status_code' => $status_code, 'msg' => $msg], $status_code);
+        }
+
+        // إذا لم يكن المستخدم جزءًا من المحادثة
+        if (!$isAuthorized) {
+            $status_code = 403;
+            $msg = 'Unauthorized';
+        } else {
+            // جلب الرسائل من المحادثة
+            $messages = $conversation->messages()->with('sender')->get();
+            $data['messages'] = $messages;
+            $status_code = 200;
+            $msg = 'عرض الرسائل الخاصة بهذه المحادثة';
+        }
+
+        $result = [
+            'data' => [
+                $data,
+                'sender_id' => $user->id,
+                'sender_name' => $user->name,
+                'receiver_id' => $receiver_id,
+                'receiver_name' => $receiver_name,
+            ],
+            'status_code' => $status_code,
+            'msg' => $msg,
+        ];
+
+        return $result;
+    }
+
+
+
+
+
 
  }
 

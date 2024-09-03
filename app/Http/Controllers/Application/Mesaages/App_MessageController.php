@@ -54,4 +54,19 @@ class App_MessageController extends Controller
                     return $this->send_response($result_data, $result['msg'], $result['status_code']);
 
                 }
+
+                public function show_message($id)
+                {
+                    $result=$this->app_message_service->show_message($id);
+                    $output=[];
+                    if($result['status_code'] == 200){
+
+                   $result_data = $result['data'] ;
+                    // response data preparation:
+                  //  $output['messages'] =  MessageResource::collection ($result_data['messages'],$result_data['sender_id']);
+
+          }
+                    return $this->send_response($result_data, $result['msg'], $result['status_code']);
+
+                }
 }

@@ -233,7 +233,9 @@ Route::group(['prefix' => 'app'], function () {
                         Route::group(['middleware' => ['role:breeder|veterinarian']], function () {
                             Route::controller(App_MessageController::class)->group(function () {
                             Route::post('send-message/{receiver_id}', 'send_message');
-                            Route::get('get-messages/{conversation}', 'show_messages');
+                            Route::get('show-messages-in-conversation/{conversation}', 'show_messages_in_conversation');
+                            //getmessage
+                            Route::get('get-messages/{user_id}', 'get_messages');
 
 
                             });

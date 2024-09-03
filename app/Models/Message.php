@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Message extends Model
 {
     use HasFactory;
-    protected $fillable = ['conversation_id', 'type', 'message'];
+    protected $fillable = ['conversation_id', 'type', 'message','sender_message_type'];
 
 
 
@@ -17,7 +17,7 @@ class Message extends Model
             return $this->beLongsTo(Conversation::class);
            }
 
-           public function sender()
+           public function messageable_sender()
            {
             return $this->morphTo();
            }

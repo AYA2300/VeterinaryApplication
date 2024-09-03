@@ -69,6 +69,17 @@ use Throwable;
                     $conversation_id=$conversation->id;
                     \broadcast(new SendMessageEvent($message, $conversation_id))->toOthers();
                     DB::commit();
+                    $data['sender']=[
+                        'name'=>  $sender->name,
+                              'id' => $sender->id,
+
+                            ];
+                    $data['receiver']=[
+                        'name' => $receiver->name,
+                        'id' => $receiver->id,
+
+                    ];
+
                     $data['message']=$message;
                     $status_code=200;
                     $msg='تم ارسال رسالتك بنجاح';
@@ -83,11 +94,7 @@ use Throwable;
 
         }
         $result = [
-            'data' =>[ $data,
-            'sender_id'=>$sender->id,
-            'sender_name'=>$sender->name,
-             'receiver_id'=>$receiver->id,
-             'receiver_name'=>$receiver->name],
+            'data' =>$data,
 
             'status_code' => $status_code,
             'msg' => $msg,
@@ -134,6 +141,16 @@ use Throwable;
         }else{
             $messages = $conversation->messages;
         $data['messages']=$messages;
+        $data['sender']=[
+            'name'=>  $user->name,
+                  'id' => $user->id,
+
+                ];
+        $data['receiver']=[
+            'name' => $receiver_name,
+            'id' => $receiver_id,
+
+        ];
         $status_code=200;
         $msg='عرض الرسائل الخاصة بهذه المحادثة';
 
@@ -143,15 +160,9 @@ use Throwable;
 
 
         $result = [
-            'data' =>[ $data,
-            'sender_id'=>$user->id,
-            'sender_name'=>$user->name,
-             'receiver_id'=>$receiver_id,
-             'receiver_name'=>$receiver_name,
+            'data' =>$data,
 
-            ],
-
-            'status_code' => $status_code,
+          'status_code' => $status_code,
             'msg' => $msg,
         ];
 
@@ -159,7 +170,107 @@ use Throwable;
 
     }
 
+//get messages
+public function get_messages($user_id){
+    $result = [];
+    $data = [];
+    $status_code = 400;
+    $msg = '';
 
- }
+
+    // Check if the user is authenticated as a breeder
+    if (Auth::guard('breeder')->check()) {
+        $user = Auth::guard('breeder')->user();
+        $veterinarian = Veterinarian::find($user_id);
+
+
+        // Ensure the veterinarian exists
+        if (!$veterinarian) {
+            $msg = 'الطبيب البيطري غير موجود';  // Veterinarian not found
+            $status_code = 404;
+        } else {
+            // Check if the breeder is authorized to view messages from this veterinarian
+            $conversation = Conversation::where('breeder_id', $user->id)
+                                        ->where('veterinary_id', $veterinarian->id)
+                                        ->first();
+                                    $receiver=$conversation->veterinary_id;
+                                    $receiver_name=$conversation->Veterinarian->name;
+
+
+            if (!$conversation) {
+                $msg = 'لا تملك الصلاحيات';  // Unauthorized access
+                $status_code = 403;
+            } else {
+                // Retrieve messages from the conversation
+                $messages = $conversation->messages;
+                $data['messages'] = $messages;
+                $msg = 'عرض الرسائل';  // Displaying messages
+                $status_code = 200;
+            }
+        }
+    }
+    // Check if the user is authenticated as a veterinarian
+    elseif (Auth::guard('veterinarian')->check()) {
+        $user = Auth::guard('veterinarian')->user();
+        $breeder = Breeder::find($user_id);
+
+        // Ensure the breeder exists
+        if (!$breeder) {
+            $msg = 'المربي غير موجود';  // Breeder not found
+            $status_code = 404;
+        } else {
+            // Check if the veterinarian is authorized to view messages with this breeder
+            $conversation = Conversation::where('breeder_id', $breeder->id)
+                                        ->where('veterinary_id', $user->id)
+                                        ->first();
+                                        $receiver=$conversation->breeder_id;
+                                        $receiver_name=$conversation->breeder->name;
+
+            if (!$conversation) {
+                $msg = 'لا تملك الصلاحيات';  // Unauthorized access
+                $status_code = 403;
+            } else {
+                // Retrieve messages from the conversation
+                $messages = $conversation->messages;
+                $data['sender']=[
+                    'name'=>  $user->name,
+                          'id' => $user->id,
+
+                        ];
+                $data['receiver']=[
+                    'name' => $receiver_name,
+                    'id' => $receiver,
+
+                ];
+
+                $data['messages'] = $messages;
+                $msg = 'عرض الرسائل';  // Displaying messages
+                $status_code = 200;
+            }
+        }
+    }
+    // If the user is neither a breeder nor a veterinarian
+    else {
+        $msg = 'لم يتم التحقق من الهوية';  // Authentication failed
+        $status_code = 401;
+    }
+
+
+
+        // Construct the response
+        $result = [
+            'data' => $data,
+            'status_code' => $status_code,
+            'msg' => $msg,
+        ];
+
+        return $result;
+    }
+
+
+
+
+}
+
 
 ?>

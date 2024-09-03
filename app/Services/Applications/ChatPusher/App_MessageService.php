@@ -4,6 +4,7 @@ namespace App\Services\Applications\ChatPusher;
 use App\Models\Conversation;
 use App\Models\Veterinarian;
 use App\Events\SendMessageEvent;
+use App\Http\Resources\MessagesChat\MessageResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -178,12 +179,11 @@ use Throwable;
             if (!$conversation) {
                 $status_code = 404;
                 $msg = 'Conversation not found';
-                return response()->json(['status_code' => $status_code, 'msg' => $msg], $status_code);
             }
 
             $isAuthorized = $conversation->breeder_id === $user->id;
             $receiver_id = $conversation->veterinary_id;
-            $receiver_name = $vet->name;
+            // $receiver_name = $vet->name;
 
         } elseif (Auth::guard('veterinarian')->check()) {
             $user = Auth::guard('veterinarian')->user();
@@ -196,16 +196,16 @@ use Throwable;
             if (!$conversation) {
                 $status_code = 404;
                 $msg = 'Conversation not found';
-                return response()->json(['status_code' => $status_code, 'msg' => $msg], $status_code);
+
             }
 
             $isAuthorized = $conversation->veterinary_id === $user->id;
             $receiver_id = $conversation->breeder_id;
-            $receiver_name = $breeder->name;
+            // $receiver_name = $breeder->name;
         } else {
             $status_code = 403;
             $msg = 'Unauthorized';
-            return response()->json(['status_code' => $status_code, 'msg' => $msg], $status_code);
+
         }
 
         // إذا لم يكن المستخدم جزءًا من المحادثة
@@ -214,20 +214,44 @@ use Throwable;
             $msg = 'Unauthorized';
         } else {
             // جلب الرسائل من المحادثة
-            $messages = $conversation->messages()->with('sender')->get();
-            $data['messages'] = $messages;
+           $messages = $conversation->messages()->get();
+
+
+
+            $messages_with_receiver_id = $messages->map(function ($message) use ($conversation) {
+                // الحصول على نوع المرسل
+                $sender_type = $message->messageable_sender_type;
+                $sender_id=$message->messageable_sender_id;
+
+                // تحديد الـ receiver_id بناءً على نوع المرسل
+                $receiver_id = ($sender_type === 'App\\Models\\Breeder')
+                    ? $conversation->veterinary_id
+                    : $conversation->breeder_id;
+
+                // إرجاع الرسالة مع receiver_id
+                return [
+                    'id'=>$message->id,
+                    'message' => $message->message,
+                    'receiver_id' => $receiver_id,
+                    'sender_id'=>$sender_id,
+                    'time'=>($message->created_at)->format('Y-m-d H:i:s A'),
+
+                ];
+            });
+
+
+
+
+
+
+
             $status_code = 200;
             $msg = 'عرض الرسائل الخاصة بهذه المحادثة';
         }
 
         $result = [
-            'data' => [
-                $data,
-                'sender_id' => $user->id,
-                'sender_name' => $user->name,
-                'receiver_id' => $receiver_id,
-                'receiver_name' => $receiver_name,
-            ],
+            'data' =>
+                $messages_with_receiver_id,
             'status_code' => $status_code,
             'msg' => $msg,
         ];

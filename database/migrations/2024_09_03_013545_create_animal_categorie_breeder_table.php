@@ -11,15 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('breeders', function (Blueprint $table) {
+        Schema::create('animal_categorie_breeder', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('password');
-            $table->string('confirm_password');
-            $table->string('phone_number');
-            $table->enum('role',['breeder']);
-            $table->string('region');
-            $table->rememberToken();
+            $table->foreignId('breeder_id')->constrained('breeders')->onDelete('cascade');
+            $table->foreignId('animal_categorie_id')->constrained('animal_categories')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -29,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('breeders');
+        Schema::dropIfExists('animal_categorie_breeder');
     }
 };

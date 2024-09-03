@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->LongText('message');
-            $table->foreignId('conversation_id')->constraiend('conversations')->onDelete('cascade');
+            $table->foreignId('conversation_id')->constrained('conversations')->onDelete('cascade');
             $table->morphs('messageable_sender');
+
             $table->string('type')->default('text'); // يمكن أن تكون 'text', 'audio', 'image'
             $table->timestamps();
         });

@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('diseases', function (Blueprint $table) {
+        Schema::create('animal_categorie_breeder', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('treatment');
-            $table->longText('causes');
-            $table->string('prevention_methods');
-            $table->longText('symptoms')->nullable();
-            $table->string('image')->nullable();
+            $table->foreignId('breeder_id')->constrained('breeders')->onDelete('cascade');
+            $table->foreignId('animal_categorie_id')->constrained('animal_categories')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('diseases');
+        Schema::dropIfExists('animal_categorie_breeder');
     }
 };

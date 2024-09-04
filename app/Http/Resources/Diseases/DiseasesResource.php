@@ -20,7 +20,8 @@ class DiseasesResource extends JsonResource
             'treatment'=>$this->treatment,
             'causes'=>$this->causes,
             'symptoms'=>$this->symptoms,
-            'image'=>$this->image
+            'image'=>$this->image,
+             'prevention_methods'=>$this->prevention_methods,
 
 
 

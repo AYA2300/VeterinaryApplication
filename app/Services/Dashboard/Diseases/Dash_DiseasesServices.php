@@ -26,7 +26,8 @@ use Throwable;
                     'treatment'=>$inputdata['treatment'],
                     'causes'=>$inputdata['causes'],
                     'symptoms'=>$inputdata['symptoms']??'null',
-                    'image'=>$image
+                    'image'=>$image,
+                    'prevention_methods'=>$inputdata['prevention_methods']
 
                 ]);
 
@@ -87,6 +88,9 @@ use Throwable;
         }
         if (isset($inputdata['image'])) {
             $newData['image'] = $this->storeFile($inputdata['image'], 'Diseases');
+        }
+        if (isset($inputdata['prevention_methods'])) {
+            $newData['prevention_methods'] = $this->storeFile($inputdata['prevention_methods'], 'Diseases');
         }
 
 

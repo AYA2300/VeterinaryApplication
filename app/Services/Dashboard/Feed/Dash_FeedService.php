@@ -179,7 +179,7 @@ public function get_feeds()
         $msg = '';
 
            $feeds=Feed::all();
-           $msg='عرض جميع الادوية';
+           $msg='عرض جميع الاعلاف';
            $status_code=200;
            $data['feeds']=$feeds;
 

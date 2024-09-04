@@ -9,18 +9,25 @@ use App\Http\Controllers\DashAuth\AuthAdminController;
 
 use App\Http\Controllers\Breeder\Auth_BreederController;
 use App\Http\Controllers\Animal\AnimalCategorieController;
+
+
+use App\Http\Controllers\Application\Order\OrderController;
+use App\Http\Controllers\Application\Feed\App_FeedController;
+use App\Http\Controllers\Dashboard\Feeds\Dash_FeedController;
+
+use App\Http\Controllers\Dashboard\order\Dash_OrderController;
+use App\Http\Controllers\Dashboard\Location\LocationController;
 use App\Http\Controllers\Application\App_BreederController;
 use App\Http\Controllers\Dashboard\Pharmacy\PharmacyController;
 use App\Http\Controllers\Application\App_VeterinarianController;
+use App\Http\Controllers\Application\Cart\App_AddToCartController;
 use App\Http\Controllers\Veterinarian\Auth_VeterinarianController;
-
 use App\Http\Controllers\Application\Mesaages\App_MessageController;
 use App\Http\Controllers\Dashboard\Diseases\Dash_DiseasesController;
 use App\Http\Controllers\Application\Diseases\App_DiseasesController;
 use App\Http\Controllers\Application\Pharmacy\App_PharmacyController;
 use App\Http\Controllers\Dashboard\Medicines\Dash_MedicineController;
 use App\Http\Controllers\Application\Medicines\App_MedicineController;
-use App\Http\Controllers\Dashboard\Feeds\Dash_FeedController;
 use App\Http\Controllers\Dashboard\Veterinarians\Dash_VeterinariansController;
 
 
@@ -99,7 +106,7 @@ Route::group(['prefix' => 'dash'], function () {
 
 
         });
-
+///feed
         Route::controller(Dash_FeedController::class)->group(function () {
             //all feeds
             Route::get('feeds/get-feeds', 'get_feeds')->name('dash.get_feeds');
@@ -148,7 +155,23 @@ Route::group(['prefix' => 'dash'], function () {
 
             });
 
+///location
+Route::controller(LocationController::class)->group(function () {
 
+    //get all
+    Route::get('get-locations','get_locations')->name('dash.get_locations');
+    Route::post('add-location','add_location')->name('dash.add_location');
+
+ });
+
+//orders
+Route::controller(Dash_OrderController::class)->group(function () {
+
+    //get all
+    Route::get('get-orders','get_orders')->name('dash.orders');
+    Route::PUT('edit-status-order/{order}','edit_status_orders')->name('dash.edit_order');
+
+ });
 
 
 
@@ -226,6 +249,18 @@ Route::group(['prefix' => 'app'], function () {
                 Route::get('medicines/get-medicine/{medicine}', 'get_medicine')->name('app.get_medicine');
 
                      });
+                     //--------------------------
+                     //feed
+                     Route::controller(App_FeedController::class)->group(function () {
+                        //all feeds
+                        Route::get('feeds/get-feeds', 'get_feeds')->name('app.get_feeds');
+                        //show single medicine
+                        Route::get('feeds/get-feed/{feed}', 'get_feed')->name('app.get_feed');
+
+                  });
+
+
+                     //---------------------------
 
                      //chat
                      Route::group(['middleware' => ['auth:breeder,veterinarian']], function () {
@@ -259,6 +294,39 @@ Route::group(['prefix' => 'breeder'], function () {
 
             //logout
             Route::Post('auth/logout-breeder', 'logout_breeder')->name('auth.logout');
+            ///Add To Cart
+            Route::Post('add-to-cart/{item_id}', 'AddToCart')->name('add.cart');
+
+        });
+
+
+    });
+
+    //cart
+    Route::controller(App_AddToCartController::class)->group(function () {
+
+        Route::group(['middleware' => ['auth:breeder']], function () {
+
+
+                  ///Add To Cart
+            Route::Post('add-to-cart/{item_id}', 'AddToCart')->name('add.cart');
+            Route::get('get-my-cart', 'get_items_cart')->name('get.cart');
+            Route::Delete('delete-item/{item_id}', 'delete_item')->name('delete.cart');
+            Route::Delete('clear', 'clear')->name('clear.cart');
+
+        });
+    });
+    //order
+    Route::controller(OrderController::class)->group(function () {
+
+        Route::group(['middleware' => ['auth:breeder']], function () {
+
+
+                  ///confirm order
+            Route::Post('order', 'confirmOrder')->name('add.order');
+//get my order
+Route::get('get-my-order', 'getmyorder')->name('get.order');
+
         });
     });
 });

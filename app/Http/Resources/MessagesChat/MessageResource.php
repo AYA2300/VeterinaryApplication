@@ -20,9 +20,9 @@ class MessageResource extends JsonResource
             'id' => $this->id,
             'message'=> $this->message,
             'type' => $this->type,
-            'sender' => $this->messageable_sender_id,
-            'time'=> ($this->created_at)->format('Y-m-d H:i:s A'),
 
+          'sender' => $this->messageable_sender_id,
+            'time'=> ($this->created_at)->format('Y-m-d H:i:s A'),
         ];
     }
 }

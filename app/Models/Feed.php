@@ -13,13 +13,17 @@ class Feed extends Model
         'type',
         'image',
         'Detailes',
+
         'price',
         'Base_price',
 
 
+    //Relation
+    public function carts(){
+        return $this->morphToMany(Cart::class,'itemable');
+    }
 
-
-
-
-    ];
+    public function orders(){
+        return $this->morphMany(OrderItem::class,'itemable');
+    }
 }

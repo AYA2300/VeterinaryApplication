@@ -28,8 +28,19 @@ class Medicine extends Model
 
     //Relation many to mant with pharmacy
     public function pharmacies(){
-        return$this->beLongsToMany(Pharmacy::class,'pharmacy_medicines')->withPivot(['price']);
+        return$this->beLongsToMany(Pharmacy::class,'pharmacy_medicines')->withPivot(['price'])->withTimestamps()
+        ;
     }
+    //morph with cart
+    public function carts(){
+
+        return $this->morphToMany(Cart::class,'cartable');
+    }
+
+    public function orders(){
+        return $this->morphMany(OrderItem::class,'itemable');
+    }
+    
 
 
 }

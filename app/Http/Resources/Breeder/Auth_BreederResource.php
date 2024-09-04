@@ -21,7 +21,7 @@ class Auth_BreederResource extends JsonResource
             'region' => $this->region,
             'animal_categorie_id' => $this->animalCategories,
 
-// 0996871240
+
 
         ];
 

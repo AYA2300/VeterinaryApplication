@@ -16,7 +16,7 @@ class Feed extends Model
 
         'price',
         'Base_price',
-
+    ];
 
     //Relation
     public function carts(){

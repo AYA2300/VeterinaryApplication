@@ -11,9 +11,14 @@ class AnimalCategorie extends Model
     protected $fillable=[
         'name'
     ];
+    protected $hidden=[
+        'pivot'
+    ];
 
     public function breeders()
     {
         return $this->belongsToMany(Breeder::class, 'animal_categorie_breeder');
     }
+
+
 }

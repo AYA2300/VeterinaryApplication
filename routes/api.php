@@ -17,6 +17,7 @@ use App\Http\Controllers\Dashboard\Feeds\Dash_FeedController;
 
 use App\Http\Controllers\Dashboard\order\Dash_OrderController;
 use App\Http\Controllers\Dashboard\Location\LocationController;
+use App\Http\Controllers\Application\App_BreederController;
 use App\Http\Controllers\Dashboard\Pharmacy\PharmacyController;
 use App\Http\Controllers\Application\App_VeterinarianController;
 use App\Http\Controllers\Application\Cart\App_AddToCartController;
@@ -210,6 +211,15 @@ Route::group(['prefix' => 'app'], function () {
 
      });
 
+ //section Breeder
+     Route::controller(App_BreederController::class)->group(function () {
+        //gat all
+                Route::get('get-Breeders','get_Breeders')->name('app.get_Breeders');
+               //get single
+                Route::get('get-Breeder/{Breeder}','get_Breeder')->name('app.get_Breeder');
+
+             });
+
 
 
     Route::controller(App_DiseasesController::class)->group(function () {
@@ -259,6 +269,8 @@ Route::group(['prefix' => 'app'], function () {
                             Route::controller(App_MessageController::class)->group(function () {
                             Route::post('send-message/{receiver_id}', 'send_message');
                             Route::get('get-messages/{conversation}', 'show_messages');
+                            Route::get('get-message/{id}', 'show_message');
+
 
 
                             });

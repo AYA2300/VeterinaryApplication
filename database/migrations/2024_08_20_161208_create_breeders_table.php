@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('confirm_password');
             $table->string('phone_number');
             $table->enum('role',['breeder']);
-            $table->foreignId('category_id')->constraiend('animal_categories')->onDelete('cascade');
             $table->string('region');
             $table->rememberToken();
             $table->timestamps();

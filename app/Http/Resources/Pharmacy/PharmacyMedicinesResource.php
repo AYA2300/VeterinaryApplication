@@ -24,6 +24,14 @@ class PharmacyMedicinesResource extends JsonResource
             ];
         });
 
+        $medicines = $this->medicines->map(function ($medicine) {
+            return [
+                 'medicines'=> new MedicineResource($medicine),
+                'price' => $medicine->pivot->price,
+            ];
+        });
+
+
         return [
             'id' =>$this->id,
             'owner'=>$this->owner,

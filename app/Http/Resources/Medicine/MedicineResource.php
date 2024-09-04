@@ -23,7 +23,9 @@ class MedicineResource extends JsonResource
             'category'=>$this->category,
              'type_of_medicine' =>$this->type_of_medicine,
              'usage' =>$this->usage,
-             'price'=>$this->price
+             'price'=>$this->price,
+             'base_price' => $this->Base_price,
+             'Composition' => $this->Composition,
 
         ];
     }

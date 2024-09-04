@@ -16,9 +16,10 @@ class Auth_BreederResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'name'=>$this->name,
             'phone_number' => $this->phone_number,
             'region' => $this->region,
-            'category_id' => $this->category_id,
+            'animal_categorie_id' => $this->animalCategories,
 
 
 

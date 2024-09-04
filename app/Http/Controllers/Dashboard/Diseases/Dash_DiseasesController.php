@@ -43,9 +43,7 @@ class Dash_DiseasesController extends Controller
             if($result['status_code']==200)
             {
                     $result_data = $result['data'];
-                  //  dd($result_data);
-                    // response data preparation:
-                //    $output['Disease'] = $result_data;
+
                     $output['Diseases'] = new DiseasesResource($result_data['Diseases']);
 
 

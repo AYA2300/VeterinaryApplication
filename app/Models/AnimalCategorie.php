@@ -12,8 +12,8 @@ class AnimalCategorie extends Model
         'name'
     ];
 
-    public function breeder(){
-        return $this->belongsTo(Breeder::class,'category_id','id');
-
+    public function breeders()
+    {
+        return $this->belongsToMany(Breeder::class, 'animal_categorie_breeder');
     }
 }

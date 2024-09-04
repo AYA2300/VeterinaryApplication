@@ -27,7 +27,9 @@ class Add_DiseasesRequest extends FormRequest
             'causes'=>'required|string',
             'symptoms'=>'nullable|string',
             'image'=>'nullable|file|image|mimes:png,jpg,jpeg,jfif|max:10000|mimetypes:image/jpeg,image/png,image/jpg,image/jfif',
-             'medicine_id'=>'nullable'
+             'medicine_id'=>'nullable',
+             'prevention_methods'=>'required|string',
+
 
         ];
     }

@@ -25,6 +25,7 @@ class Add_FeedRequest extends FormRequest
             'name'=>'required|string',
             'type'=>'required|string',
             'Detailes'=>'required|string|min:4',
+            'Base_price'=>'nullable',
             'price'=>'required|string',
             'image'=>'required|file|image|mimes:png,jpg,jpeg,jfif|max:10000|mimetypes:image/jpeg,image/png,image/jpg,image/jfif',
 

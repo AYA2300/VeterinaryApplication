@@ -14,7 +14,8 @@ class Diseases extends Model
         'treatment',
         'causes',
         'symptoms',
-        'image'
+        'image',
+        'prevention_methods'
 
 
 

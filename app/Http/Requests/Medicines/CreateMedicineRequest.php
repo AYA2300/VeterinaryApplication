@@ -29,6 +29,8 @@ class CreateMedicineRequest extends FormRequest
             'category'=>'string|required',
             'type_of_medicine'=>'string',
             'usage'=>'string|nullable',
+            'Composition'=> 'nullable',
+            'Base_price'=>'nullable',
             'price' => 'nullable|numeric|min:0'
         ];
     }

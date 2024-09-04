@@ -21,8 +21,8 @@ use Throwable;
             $msg='';
             $result=[];
 
-            try{
-                DB::beginTransaction();
+            // try{
+            //     DB::beginTransaction();
                 $breeder=Breeder::create([
                     'name'=>$input_data['name'],
                     'password'=>Hash::make($input_data['password']),
@@ -30,12 +30,21 @@ use Throwable;
                     'phone_number'=>$input_data['phone_number'],
                     'role'=>'breeder',
                     'region'=>$input_data['region'],
-                    'category_id'=>$input_data['category_id']
+
 
                 ]);
 
+          if (isset($input_data['animal_categorie_id']) || is_array(isset($input_data['animal_categorie_id']))) {
+
+                   $breeder->animalCategories()->attach($input_data['animal_categorie_id']);
+                 }
+
+
+
+
                 $breeder->assignRole(Role::where('name','breeder')->first());
                 $auth_token=JWTAuth::fromUser($breeder);
+
                 DB::commit();
 
                 $data['Breeder']=$breeder;
@@ -44,14 +53,14 @@ use Throwable;
                 $msg = 'Register Breeder ';
 
 
-            }catch(Throwable $th){
-                DB::roleBack();
-                Log::debug($th);
-                $status_code = 500;;
-                $data = $th;
-                $msg = 'error ' . $th->getMessage();
+            // }catch(Throwable $th){
+            //     DB::roleBack();
+            //     Log::debug($th);
+            //     $status_code = 500;;
+            //     $data = $th;
+            //     $msg = 'error ' . $th->getMessage();
 
-            }
+            // }
             $result =[
                 'data' => $data,
                 'status_code' => $status_code,

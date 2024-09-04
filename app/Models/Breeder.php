@@ -21,7 +21,6 @@ class Breeder  extends Authenticatable implements JWTSubject
         'confirm_password',
         'password',
         'role',
-        'category_id',
         'region'
 
 
@@ -47,9 +46,9 @@ class Breeder  extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function AnimalCategorie(){
-        return $this->hasOne(AnimalCategorie::class,'category_id','id');
-
+    public function animalCategories()
+    {
+        return $this->belongsToMany(AnimalCategorie::class, 'animal_categorie_breeder');
     }
 
       //Relations

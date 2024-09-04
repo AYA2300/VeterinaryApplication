@@ -20,7 +20,7 @@ class Auth_VeterinarianResource extends JsonResource
             'email'=>$this->email,
             'certificate_image'=>$this->certificate_image,
             'experience_certificate_image'=>$this->experience_certificate_image,
-            'phone_number'=>$this->phone_number,
+            'address'=>$this->Address,
             'Specialization'=>$this->Specialization,
             'photo'=>$this->photo,
 

@@ -24,6 +24,8 @@ class UpdateMedicineRequest extends FormRequest
         return [
             //
             'name'=>'nullable|string',
+            'Base_price'=>'nullable',
+            'Composition'=> 'nullable',
             'image'=>'nullable|file|image|mimes:png,jpg,jpeg,jfif|max:10000|mimetypes:image/jpeg,image/png,image/jpg,image/jfif',
             'category'=>'string|nullable',
             'type_of_medicine'=>'nullable|string',

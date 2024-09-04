@@ -19,14 +19,15 @@ use Throwable;
 
             try{
                 DB::beginTransaction();
-                $image=isset($input_data['image'])?$this->storeFile($input_data['image'],'Diseases'):'null';
+                $image=isset($inputdata['image'])?$this->storeFile($inputdata['image'],'Diseases'):'null';
 
                 $disease=Diseases::create([
                     'name'=>$inputdata['name'],
                     'treatment'=>$inputdata['treatment'],
                     'causes'=>$inputdata['causes'],
                     'symptoms'=>$inputdata['symptoms']??'null',
-                    'image'=>$image
+                    'image'=>$image,
+                    'prevention_methods'=>$inputdata['prevention_methods']
 
                 ]);
 
@@ -88,6 +89,9 @@ use Throwable;
         if (isset($inputdata['image'])) {
             $newData['image'] = $this->storeFile($inputdata['image'], 'Diseases');
         }
+        if (isset($inputdata['prevention_methods'])) {
+            $newData['prevention_methods'] = $this->storeFile($inputdata['prevention_methods'], 'Diseases');
+        }
 
 
         $disease = Diseases::find($id);
@@ -126,13 +130,6 @@ use Throwable;
 
     return $result;
 }
-
-
-
-
-
-
-
 
 
 

@@ -179,11 +179,13 @@ Route::controller(Dash_OrderController::class)->group(function () {
 });
 //--------------------------------End DashBoaard------------------------
 //------------------------------------auth veterinarian--------------------------
-Route::group(['prefix' => 'veterinarian'], function () {
+Route::group(['prefix' => 'auth'], function () {
 
     Route::controller(Auth_VeterinarianController::class)->group(function () {
-        Route::post('auth/register-veterinarian', 'register_veterinarian')->name('auth.register_veterinarian');
-        Route::post('auth/login-veterinarian', 'login_veterinarian')->name('auth.login_veterinarian');
+        Route::post('register-veterinarian', 'register_veterinarian')->name('auth.register_veterinarian');
+       // Route::post('auth/login-veterinarian', 'login_veterinarian')->name('auth.login_veterinarian');
+        Route::post('login', 'login')->name('auth.login');
+
 
         // Refresh auth Token
         Route::Post('veterinarian-refresh', 'refresh')->name('veterinarian.refresh');

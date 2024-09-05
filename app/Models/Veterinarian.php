@@ -24,7 +24,8 @@ class Veterinarian extends Authenticatable implements JWTSubject
         'confirm_password',
         'photo',
         'email',
-        'password'
+        'password',
+        'phone_number'
     ];
 
 

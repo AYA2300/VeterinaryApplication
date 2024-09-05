@@ -23,6 +23,7 @@ class Auth_VeterinarianResource extends JsonResource
             'address'=>$this->Address,
             'Specialization'=>$this->Specialization,
             'photo'=>$this->photo,
+            'number'=>$this->number
 
         ];
     }

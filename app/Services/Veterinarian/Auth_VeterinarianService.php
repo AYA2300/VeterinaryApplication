@@ -34,7 +34,8 @@ use HasApiTokens,FileStorageTrait;
              'name' => $input_data['name'],
              'password' => Hash::make($input_data['password']),
              'confirm_password' => Hash::make($input_data['confirm_password']),
-             'email' => $input_data['email'],
+             'phone_number' => $input_data['phone_number'],
+             'email'=>$input_data['email'],
              'role' =>'veterinarian',
              //store img using trait
              'certificate_image'=>$this->storeFile($input_data['certificate_image'],'Veterinarians'),
@@ -82,12 +83,12 @@ use HasApiTokens,FileStorageTrait;
             $result = [];
 
              $credentials=[
-                'email'=>$input_data['email'],
+                'number'=>$input_data['number'],
                 'password' =>$input_data['password']
              ];
             if(!$auth_token = Auth::guard('veterinarian')->attempt($credentials)){
                 $status_code = 404;
-            $msg = 'Please Check your email and Password';
+            $msg = 'Please Check your number and Password';
              }
              else{
            $veterinarian=Auth::guard('veterinarian')->user();
@@ -163,6 +164,64 @@ public function refresh_token()
 
 
 }
+
+public function login(array $input_data)
+{
+
+
+
+$data = [];
+$status_code = 400;
+$msg = '';
+$result = [];
+
+$credentials = [
+    'phone_number' => $input_data['phone_number'],
+    'password' => $input_data['password']
+];
+
+// حاول تسجيل الدخول كـ breeder
+if ($auth_token = Auth::guard('breeder')->attempt($credentials)) {
+    $breeder = Auth::guard('breeder')->user();
+
+    $data = [
+        'user_type' => 'breeder',  // تحديد نوع المستخدم
+        'user' => $breeder,
+        'auth_token' => $auth_token,
+    ];
+    $status_code = 200;
+    $msg = 'Logged in as Breeder';
+}
+// حاول تسجيل الدخول كـ veterinarian
+elseif ($auth_token = Auth::guard('veterinarian')->attempt($credentials)) {
+    $veterinarian = Auth::guard('veterinarian')->user();
+
+    $data = [
+        'user_type' => 'veterinarian',  // تحديد نوع المستخدم
+        'user' => $veterinarian,
+        'auth_token' => $auth_token,
+    ];
+    $status_code = 200;
+    $msg = 'Logged in as Veterinarian';
+}
+else {
+    // إذا كانت بيانات الدخول غير صحيحة لأي من الحارسين
+    $status_code = 404;
+    $msg = 'Please check your number and password';
+}
+
+$result = [
+    'data' => $data,
+    'status_code' => $status_code,
+    'msg' => $msg,
+];
+
+return $result;
+
+
+
+}
+
 
 
 }

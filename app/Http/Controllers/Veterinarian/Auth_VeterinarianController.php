@@ -53,6 +53,30 @@ class Auth_VeterinarianController extends Controller
 
 
     }
+
+
+    public function login(Login_VeterinarianRequest $request)
+    {
+     $input_data=$request->validated();
+     $result=$this->auth_veterian_service->login($input_data);
+     $output = [];
+     if ($result['status_code'] == 200) {
+         $result_data = $result['data'];
+         // response data preparation:
+        // $output['auth_token']   = $result_data['auth_token'];
+         //$output['data'] = new Auth_VeterinarianResource($result_data['data']);
+     }
+
+     return $this->send_response($result, $result['msg'], $result['status_code']);
+
+
+    }
+
+
+
+
+
+
     public function logout_veterinarian()
     {
         $result = $this->auth_veterian_service->logout_veterinarian();

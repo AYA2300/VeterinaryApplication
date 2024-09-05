@@ -19,6 +19,9 @@ return new class extends Migration
             $table->text('Detailes');
             $table->string('price');
             $table->string('Base_price')->nullable();
+            $table->string('Description')->nullable();
+            $table->string('Composition')->nullable();
+
             $table->timestamps();
         });
     }

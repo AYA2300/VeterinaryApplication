@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('photo')->nullable();
             $table->string('experience_certificate_image')->nullable();
             $table->string('Specialization')->nullable();
+            $table->string('phone_number');
             $table->string('Address')->nullable();
             $table->enum('role',['veterinarian']);
             $table->rememberToken();

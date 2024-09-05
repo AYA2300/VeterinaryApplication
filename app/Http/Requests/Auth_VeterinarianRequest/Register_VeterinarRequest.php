@@ -30,6 +30,7 @@ class Register_VeterinarRequest extends FormRequest
             'photo'=>'nullable|file|image|mimes:png,jpg,jpeg,jfif|max:10000|mimetypes:image/jpeg,image/png,image/jpg,image/jfif',
             'certificate_image'=>'required|file|image|mimes:png,jpg,jpeg,jfif|max:10000|mimetypes:image/jpeg,image/png,image/jpg,image/jfif',
             'Address'=>'nullable',
+            'phone_number'=>'required|string',
             'Specialization'=>'nullable|string',
             'experience_certificate_image.*' =>"file|image|mimes:png,jpg,jpeg,jfif|max:10000|mimetypes:image/jpeg,image/png,image/jpg,image/jfif|max:2048",
              'experience_certificate_image'=>'array|max:5',

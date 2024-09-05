@@ -23,7 +23,7 @@ class Login_VeterinarianRequest extends FormRequest
     {
         return [
             //
-            'email' =>'required|string|email',
+            'phone_number' =>'required|string',
             'password' =>'required|min:6|max:8'
         ];
     }

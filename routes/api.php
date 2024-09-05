@@ -179,11 +179,13 @@ Route::controller(Dash_OrderController::class)->group(function () {
 });
 //--------------------------------End DashBoaard------------------------
 //------------------------------------auth veterinarian--------------------------
-Route::group(['prefix' => 'veterinarian'], function () {
+Route::group(['prefix' => 'auth'], function () {
 
     Route::controller(Auth_VeterinarianController::class)->group(function () {
-        Route::post('auth/register-veterinarian', 'register_veterinarian')->name('auth.register_veterinarian');
-        Route::post('auth/login-veterinarian', 'login_veterinarian')->name('auth.login_veterinarian');
+        Route::post('register-veterinarian', 'register_veterinarian')->name('auth.register_veterinarian');
+       // Route::post('auth/login-veterinarian', 'login_veterinarian')->name('auth.login_veterinarian');
+        Route::post('login', 'login')->name('auth.login');
+
 
         // Refresh auth Token
         Route::Post('veterinarian-refresh', 'refresh')->name('veterinarian.refresh');
@@ -210,6 +212,12 @@ Route::group(['prefix' => 'app'], function () {
         Route::get('get-veterinarian/{veterinarian}','get_veterinarian')->name('app.get_veterinarian');
 
      });
+
+     Route::controller(LocationController::class)->group(function () {
+
+        //get all
+        Route::get('get-locations','get_locations')->name('app.get_locations');});
+
 
  //section Breeder
      Route::controller(App_BreederController::class)->group(function () {
@@ -301,6 +309,7 @@ Route::group(['prefix' => 'breeder'], function () {
 
 
     });
+
 
     //cart
     Route::controller(App_AddToCartController::class)->group(function () {

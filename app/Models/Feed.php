@@ -13,6 +13,8 @@ class Feed extends Model
         'type',
         'image',
         'Detailes',
+        'Description',
+        'Composition',
 
         'price',
         'Base_price',

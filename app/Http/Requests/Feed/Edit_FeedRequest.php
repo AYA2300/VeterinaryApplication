@@ -28,6 +28,9 @@ class Edit_FeedRequest extends FormRequest
             'Base_price'=>'nullable',
             'price'=>'nullable|string',
             'image'=>'nullable|file|image|mimes:png,jpg',
+            'Description'=>'nullable|min:4',
+            'Composition'=>'nullable|string',
+
         ];
     }
 }

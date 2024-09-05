@@ -27,6 +27,8 @@ class  Dash_FeedService{
                 'type'=>$inputdata['type'],
                 'Detailes'=>$inputdata['Detailes'],
                 'Base_price' => $input_data['Base_price']??'null',
+                'Description'=>$inputdata['Description'],
+                'Composition'=>$inputdata['Composition'],
 
                 'price'=>$inputdata['price'],
                 'image'=>$image
@@ -85,6 +87,13 @@ class  Dash_FeedService{
                     if (isset($inputdata['image'])) {
                         $newData['image']=$this->storeFile($inputdata['image'],'Feed')??$feed->image;
                     }
+                    if (isset($inputdata['Description'])) {
+                        $newData['Description'] = $inputdata['Description'];
+                    }
+                    if (isset($inputdata['Composition'])) {
+                        $newData['Composition'] = $inputdata['Composition'];
+                    }
+
 
 
 

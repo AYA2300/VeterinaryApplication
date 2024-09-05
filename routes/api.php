@@ -211,6 +211,12 @@ Route::group(['prefix' => 'app'], function () {
 
      });
 
+     Route::controller(LocationController::class)->group(function () {
+
+        //get all
+        Route::get('get-locations','get_locations')->name('app.get_locations');});
+
+
  //section Breeder
      Route::controller(App_BreederController::class)->group(function () {
         //gat all
@@ -301,6 +307,7 @@ Route::group(['prefix' => 'breeder'], function () {
 
 
     });
+
 
     //cart
     Route::controller(App_AddToCartController::class)->group(function () {

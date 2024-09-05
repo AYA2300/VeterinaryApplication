@@ -115,7 +115,8 @@ use Throwable;
         $msg = '';
         $result = [];
 
-        $Diseases=Diseases::all();
+        $Diseases = Diseases::with('medicines')->get();
+
         $data['Diseases']=$Diseases;
         $msg='Get all Diseases';
         $status_code=200;

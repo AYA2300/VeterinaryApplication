@@ -17,10 +17,12 @@ class OrderResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'breeder_id' => $this->cart->breeder_id,
-            'breeder_name' => $this->cart->breeder->name,
+            'user_id' => $this->cart->userable->name,
+            'userable_name' => $this->cart->userable->id,
+            'role' => $this->cart->userable->role,
+
             'cart_id' => $this->cart_id,
-            'location' =>$this->location->name??'null' ,
+            'location' =>$this->location->name??'center' ,
              'delivery_price' =>$this->location->delivery_price??'0',
             'order_number' => $this->order_number,
             'status' => $this->status??'pending',

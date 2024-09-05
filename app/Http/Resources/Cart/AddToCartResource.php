@@ -34,7 +34,9 @@ class AddToCartResource extends JsonResource
 
         return[
            'id'=> $this->id,
-            'breeder'=>new Auth_BreederResource($this->breeder),
+            'user'=>$this->userable->id,
+            'role' =>$this->userable->role,
+            'name'=>$this->userable->name,
             'medicines' => $medicines,
             'feeds' =>  $feeds,
             'time'=> ($this->created_at)->format('Y-m-d H:i:s A')

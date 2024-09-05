@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('breeder_id')->constraiend('breeders')->onDelete('cascade');
+            $table->morphs('userable');
             $table->timestamps();
         });
     }

@@ -305,7 +305,7 @@ Route::group(['prefix' => 'breeder'], function () {
     //cart
     Route::controller(App_AddToCartController::class)->group(function () {
 
-        Route::group(['middleware' => ['auth:breeder']], function () {
+        Route::group(['middleware' => ['auth:breeder,veterinarian']], function () {
 
 
                   ///Add To Cart
@@ -319,7 +319,7 @@ Route::group(['prefix' => 'breeder'], function () {
     //order
     Route::controller(OrderController::class)->group(function () {
 
-        Route::group(['middleware' => ['auth:breeder']], function () {
+        Route::group(['middleware' => ['auth:breeder,veterinarian']], function () {
 
 
                   ///confirm order

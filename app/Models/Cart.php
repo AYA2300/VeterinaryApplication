@@ -13,9 +13,11 @@ class Cart extends Model
      'breeder_id'
     ];
 
-    public function breeder(){
-        return $this->beLongsTo(Breeder::class);
+    public function userable()
+    {
+        return $this->morphTo();
     }
+
     //morphs
 
       public function medicines()

@@ -21,15 +21,28 @@ class App_CartServices{
         $msg='';
 
         try {
-            DB::beginTransaction();
-            $breeder = Auth::guard('breeder')->user();
 
-            if (!$breeder) {
-                return response()->json(['status' => 'المربي غير مصرح له'], 403);
+            // التحقق من المستخدم المسجل كمربي
+            if (Auth::guard('breeder')->check()) {
+                $user = Auth::guard('breeder')->user();
+            } elseif (Auth::guard('veterinarian')->check()) {
+                $user = Auth::guard('veterinarian')->user();
             }
+                // إنشاء أو تحديث السلة بناءً على معرف المستخدم
+            $cart = $user->cart()->updateOrCreate(
+                [
+                    'userable_id' => $user->id,  // معرف المستخدم
+                    'userable_type' => get_class($user),  // نوع المستخدم (Breeder أو Veterinarian)
+                ],
+                [
+                    // الحقول الأخرى التي ترغب في تعيينها أو تحديثها
+                ]
+            );
+
+
+
 
             // الحصول على السلة أو إنشائها للمربي
-            $cart = Cart::firstOrCreate(['breeder_id' => $breeder->id]);
 
             // المتغيرات المبدئية
             $sumPrice = 0;
@@ -122,56 +135,68 @@ class App_CartServices{
      /////-------------------------------------------------------
      //getItems
 
-      public function get_items()
-      {
-        $result=[];
-        $data=[];
-        $status_code=400;
-        $msg='';
-$breeder = Auth::guard('breeder')->user();
-if ($breeder) {
-    $cart = Cart::where('breeder_id', $breeder->id)->first();
+     public function get_items()
+     {
+         $result = [];
+         $data = [];
+         $status_code = 400;
+         $msg = '';
 
-    if ($cart) {
-        if ($cart->breeder_id !== $breeder->id) {
-            $msg = 'غير مصرح لك بالوصول إلى هذه السلة';
-            $status_code = 403;
-        } else {
-            $sumPrice = 0;
+         // الحصول على المستخدم الحالي بناءً على نوع الحارس
+         $user = null;
+         $user_type = null;
 
-            $sumPrice += $cart->medicines->sum(function($medicine) {
-                return $medicine->pivot->quantity * $medicine->price;
-            });
+         if (Auth::guard('breeder')->check()) {
+             $user = Auth::guard('breeder')->user();
+             $user_type = 'App\Models\Breeder'; // افتراض أن هذا هو الـ namespace لنموذج Breeder
+         } elseif (Auth::guard('veterinarian')->check()) {
+             $user = Auth::guard('veterinarian')->user();
+             $user_type = 'App\Models\Veterinarian'; // افتراض أن هذا هو الـ namespace لنموذج Veterinarian
+         }
 
-            $sumPrice += $cart->feeds->sum(function($feed) {
-                return $feed->pivot->quantity * $feed->price;
-            });
+         // التحقق من وجود المستخدم
+         if (!$user) {
+             $msg = 'يجب تسجيل الدخول للوصول إلى هذه الصفحة';
+             $status_code = 401;
+             return response()->json(['message' => $msg], $status_code);
+         }
 
-            $data['carts'] = $cart;
-            $data['SumPrice'] = $sumPrice ;
-            $status_code = 200;
-            $msg = 'تم استرجاع العناصر بنجاح';
-        }
-    } else {
-        $msg = 'السلة غير موجودة';
-        $status_code = 404;
-    }
-} else {
-    // إذا لم يتم العثور على مربي
-    $msg = 'المربي غير مصرح له';
-    $status_code = 403;
-}
+         // البحث عن سلة تابعة للمستخدم الحالي بناءً على النوع
+         $cart = Cart::where('userable_id', $user->id)
+             ->where('userable_type', $user_type)
+             ->first();
 
-// إعداد النتيجة النهائية للإرجاع
-$result = [
-    'data' => $data,
-    'status_code' => $status_code,
-    'msg' => $msg,
-];
+         // التحقق من وجود السلة
+         if (!$cart) {
+             $msg = 'لا تملك صلاحيات للوصول إلى هذه السلة';
+             $status_code = 403;
+         } else {
+             // حساب السعر الإجمالي
+             $sumPrice = $cart->medicines->sum(function($medicine) {
+                 return $medicine->pivot->quantity * $medicine->price;
+             });
 
-return $result;
+             $sumPrice += $cart->feeds->sum(function($feed) {
+                 return $feed->pivot->quantity * $feed->price;
+             });
 
-      }
+             // إعداد البيانات للاستجابة
+             $data['carts'] = $cart;
+             $data['SumPrice'] = $sumPrice;
+             $status_code = 200;
+             $msg = 'تم استرجاع العناصر بنجاح';
+         }
+
+         // إعداد النتيجة النهائية للإرجاع
+         $result = [
+             'data' => $data,
+             'status_code' => $status_code,
+             'msg' => $msg,
+         ];
+
+         return $result;
+     }
+
 
       //--------------------------------------------------------------
       //delete
@@ -182,29 +207,50 @@ return $result;
         $status_code = 400;
         $msg = '';
 
-        try {
-            // الحصول على المستخدم المصادق عليه
-            $breeder = Auth::guard('breeder')->user();
-            $cart = Cart::where('breeder_id', '!=', $breeder->id)->first();
-            if($cart){
-                        $status_code=403;
-                        $msg='لا تملك صلاحيات بالحذف';
-                     }else{
-                            $item_id->delete();
-                            $status_code=200;
-                            $msg='تم الحذف';
-                     }
-
-
-                }
-
-         catch (Exception $th) {
-            // في حالة حدوث خطأ غير متوقع
-            Log::debug($th);
-            $status_code = 500;
-            $msg = 'حدث خطا';
+        $user = null;
+        $user_type = null;
+try{
+        if (Auth::guard('breeder')->check()) {
+            $user = Auth::guard('breeder')->user();
+            $user_type = 'App\Models\Breeder'; // افتراض أن هذا هو الـ namespace للنموذج
+        } elseif (Auth::guard('veterinarian')->check()) {
+            $user = Auth::guard('veterinarian')->user();
+            $user_type = 'App\Models\Veterinarian'; // افتراض أن هذا هو الـ namespace للنموذج
         }
 
+        if ($user) {
+            // البحث عن السلة المرتبطة بالمستخدم بناءً على النوع
+            $cart = Cart::where('userable_id', $user->id)
+                        ->where('userable_type', $user_type)
+                        ->first();
+
+            if (!$cart) {
+                // إذا لم يتم العثور على سلة
+                $msg = 'لم يتم العثور على سلة لهذا المستخدم';
+                $status_code = 404;
+            } else {
+                // التحقق من أن العنصر موجود وحذفه
+                if (isset($item_id)) {
+                    $item_id->delete();
+                    $status_code = 200;
+                    $msg = 'تم الحذف بنجاح';
+                } else {
+                    $msg = 'العنصر غير موجود';
+                    $status_code = 404;
+                }
+            }
+        } else {
+            // إذا لم يتم العثور على مستخدم مصادق عليه
+            $msg = 'يجب تسجيل الدخول للوصول إلى هذه الصفحة';
+            $status_code = 401;
+        }
+    }
+
+    catch (\Exception $e) {
+        // في حالة حدوث خطأ غير متوقع
+        $msg = 'حدث خطأ غير متوقع';
+        $status_code = 500;
+    }
         // إرجاع النتيجة كاستجابة JSON
         $result = [
             'data' => $data,
@@ -215,6 +261,7 @@ return $result;
         return $result;
 
     }
-}
+    }
+
 
 ?>

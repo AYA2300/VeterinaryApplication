@@ -36,7 +36,7 @@ class App_MessageController extends Controller
          // $output['message'] = new MessageResource ($result_data['message']);
 
 }
-          return $this->send_response($result_data, $result['msg'], $result['status_code']);
+          return $this->send_response($result, $result['msg'], $result['status_code']);
 
                 }
 

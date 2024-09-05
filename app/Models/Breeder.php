@@ -63,10 +63,10 @@ class Breeder  extends Authenticatable implements JWTSubject
         {
          return $this->morphMany(Message::class,'messageable_sender');
         }
-        
+
         ///Relation cart
 
         public function cart(){
-            return $this->hasOne(Cart::class,'breeder_id');
+            return $this->morphOne(Cart::class,'userable');
         }
 }

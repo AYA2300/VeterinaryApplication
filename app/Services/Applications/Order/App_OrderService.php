@@ -28,17 +28,30 @@ class App_OrderService{
             DB::beginTransaction(); // بدء المعاملة
 
             // الحصول على المستخدم الحالي من الحارس "breeder"
-            $breeder = Auth::guard('breeder')->user();
+            $user_type = null;
 
+            if (Auth::guard('breeder')->check()) {
+                $user = Auth::guard('breeder')->user();
+                $user_type = 'App\Models\Breeder'; // افتراض أن هذا هو الـ namespace لنموذج Breeder
+            } elseif (Auth::guard('veterinarian')->check()) {
+                $user = Auth::guard('veterinarian')->user();
+                $user_type = 'App\Models\Veterinarian'; // افتراض أن هذا هو الـ namespace لنموذج Veterinarian
+            }
             // التحقق من وجود سلة للمستخدم
-            if (!$breeder->cart) {
+            if (!$user->cart) {
                     $msg='ليس لديك سلة';
                     $status_code=404;
             }
 
             // البحث عن سلة تابعة للمستخدم الحالي
-            $cart = Cart::where('breeder_id', $breeder->id)->first();
+            $cart = Cart::where('userable_id', $user->id)
+            ->where('userable_type', $user_type)
+            ->first();
 
+if (!$cart) {
+    $msg = 'لا تملك صلاحيات';
+    $status_code = 403;
+}
             if (!$cart) {
                 $msg='لا تملك صلاحيات';
                    $status_code=403;
@@ -151,88 +164,113 @@ $feeds=[];
         $data=[];
         $status_code=400;
         $msg='';
-        $breeder = Auth::guard('breeder')->user();
+        $user = null;
+        $user_type = null;
 
-        if ($breeder->cart) {
-            $cart = Cart::where('breeder_id', $breeder->id)->first();
+        if (Auth::guard('breeder')->check()) {
+            $user = Auth::guard('breeder')->user();
+            $user_type = 'App\Models\Breeder'; // افتراض أن هذا هو الـ namespace لنموذج Breeder
+        } elseif (Auth::guard('veterinarian')->check()) {
+            $user = Auth::guard('veterinarian')->user();
+            $user_type = 'App\Models\Veterinarian'; // افتراض أن هذا هو الـ namespace لنموذج Veterinarian
+        }
 
+        // التحقق من وجود المستخدم
+        if (!$user) {
+            $msg = 'يجب تسجيل الدخول للوصول إلى هذه الصفحة';
+            $status_code = 401;
+            return response()->json(['message' => $msg], $status_code);
+        }
+
+        // البحث عن سلة تابعة للمستخدم الحالي بناءً على النوع
+        $cart = Cart::where('userable_id', $user->id)
+            ->where('userable_type', $user_type)
+            ->first();
+
+        // التحقق من وجود السلة
+        if (!$cart) {
+            $msg = 'لا تملك صلاحيات';
+            $status_code = 403;
+        } else {
+            // التحقق من وجود طلبات في السلة
             if ($cart->orders()->exists()) {
                 // الحصول على الطلبات بناءً على الحالة (current أو previous)
                 if ($order === 'current') {
-                    $orders = Order::where('cart_id', $cart->id)->where('status', 'pending')->get();
-                } elseif ($order == 'previous') {
-                    $orders = Order::where('cart_id', $cart->id)->where('status', 'completed')->get();
+                    $orders = Order::where('cart_id', $cart->id)
+                                   ->where('status', 'pending')
+                                   ->get();
+                } elseif ($order === 'previous') {
+                    $orders = Order::where('cart_id', $cart->id)
+                                   ->where('status', 'completed')
+                                   ->get();
                 }
 
-                // جلب عناصر الطلب لكل طلب
-                $items = $orders->flatMap(function ($order) {
-                    return $order->orderItems->map(function ($item) {
-                        // جلب بيانات itemable (العلاقة المتعددة الأشكال)
-                        $itemable = $item->itemable;
-                        $order = $item->order_id;
-                        $cart = $item->order->cart;
+                if ($orders->isEmpty()) {
+                    $msg = 'لا توجد طلبات متاحة';
+                    $status_code = 404;
+                } else {
+                    // جلب عناصر الطلب لكل طلب
+                    $items = $orders->flatMap(function ($order) {
+                        return $order->orderItems->map(function ($item) {
+                            // جلب بيانات itemable (العلاقة المتعددة الأشكال)
+                            $itemable = $item->itemable;
 
-                        // تحديد نوع العنصر بناءً على نوع العلاقة المتعددة الأشكال
-                        $itemType = class_basename($itemable); // هذا يعيد اسم الكلاس (مثلاً: "Medicine" أو "Feed")
+                            // تحديد نوع العنصر بناءً على نوع العلاقة المتعددة الأشكال
+                            $itemType = class_basename($itemable); // هذا يعيد اسم الكلاس (مثلاً: "Medicine" أو "Feed")
 
-                        // تخصيص البيانات بناءً على نوع العنصر
-                        if ($itemType === 'Medicine') {
-                            // تخصيص بيانات الدواء
-                            $itemDetails = [
-                                'type' => 'Medicine',
-                                'details' => new MedicineResource($itemable),
+                            // تخصيص البيانات بناءً على نوع العنصر
+                            $itemDetails = [];
+                            if ($itemType === 'Medicine') {
+                                $itemDetails = [
+                                    'type' => 'Medicine',
+                                    'details' => new MedicineResource($itemable),
+                                ];
+                            } elseif ($itemType === 'Feed') {
+                                $itemDetails = [
+                                    'type' => 'Feed',
+                                    'details' => new FeedResource($itemable),
+                                ];
+                            }
+
+                            // تجميع تفاصيل العنصر في استجابة JSON
+                            return [
+                                'item' => [
+                                    'id' => $item->id,
+                                    'quantity' => $item->quantity,
+                                    'item_details' => $itemDetails,
+                                    'created_at' => $item->created_at->format('Y-m-d H:i:s A'),
+                                ],
+                                'order' => [
+                                    'id' => $item->order->id,
+                                    'order_number' => $item->order->order_number,
+                                    'status' => $item->order->status,
+                                ],
+                                'cart' => [
+                                    'id' => $item->order->cart->id,
+                                ],
                             ];
-                        } elseif ($itemType === 'Feed') {
-                            // تخصيص بيانات العلف
-                            $itemDetails = [
-                                'type' => 'Feed',
-                                'details' => new FeedResource($itemable),
-                            ];
-                        }
-
-                        // تجميع تفاصيل العنصر في استجابة JSON
-                        return [
-                            'item' => [
-                                'id' => $item->id,
-                                'quantity' => $item->quantity,
-                                'item_details' => $itemDetails, // تفاصيل العنصر بناءً على نوعه
-                                'created_at' => $item->created_at->format('Y-m-d H:i:s A'),
-                            ],
-                            'order' => [
-                                'id' => $item->order->id,
-                                'order_number' => $item->order->order_number,
-                                'status' => $item->order->status,
-                            ],
-                            'cart' => [
-                                'id' => $cart->id,
-                            ],
-                        ];
+                        });
                     });
-                });
-               $data['items'] = $items;
-                              $msg='عرض طلباتي';
-                              $status_code=200;
 
+                    $data['items'] = $items;
+                    $msg = 'تم عرض الطلبات بنجاح';
+                    $status_code = 200;
+                }
             } else {
-              $msg='لايوجد طلبات';
-              $status_code=404;
-
+                $msg = 'لا توجد طلبات متاحة';
+                $status_code = 404;
             }
-        } else {
-           $msg='لا يوجد سلة';
-           $status_code=404;
-
         }
+
+        // إعداد الاستجابة
         $result = [
             'data' => $data,
             'status_code' => $status_code,
             'msg' => $msg,
         ];
 
-        return $result;
-    }
-}
-
+       return $result;
+    }}
 
 
 

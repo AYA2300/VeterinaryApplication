@@ -23,7 +23,7 @@ class App_AddToCartRequest extends FormRequest
     {
         return [
             //
-            'breeder_id' => 'exists:breeders,id',
+            'user_id' => 'exists:breeders,id|exists:veterinarians,id',
             'cart_id' => 'exists:carts,id',
             'quantity' => 'nullable|integer|min:1',
             'type' => 'required|string|in:medicine,feed',

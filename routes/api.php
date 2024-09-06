@@ -28,8 +28,11 @@ use App\Http\Controllers\Application\Diseases\App_DiseasesController;
 use App\Http\Controllers\Application\Pharmacy\App_PharmacyController;
 use App\Http\Controllers\Dashboard\Medicines\Dash_MedicineController;
 use App\Http\Controllers\Application\Medicines\App_MedicineController;
+use App\Http\Controllers\Community\CommunityController;
 use App\Http\Controllers\Dashboard\Veterinarians\Dash_VeterinariansController;
-
+use App\Http\Controllers\Group_Messages\GroupMessageController;
+use App\Models\Community;
+use App\Models\Group_Message;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +71,12 @@ Route::group(['prefix' => 'dash'], function () {
             //logout Admin
             Route::Post('auth/logout_admin', 'logout_admin')->name('dash.auth.logout');
         });
+
+        Route::controller(CommunityController::class)->group(function () {
+
+            Route::Post('add_community','add_community')->name('add_community');});
+
+
     });
     Route::group(['middleware' => ['auth:admin']], function () {
 
@@ -308,6 +317,8 @@ Route::group(['prefix' => 'breeder'], function () {
         });
 
 
+
+
     });
 
 
@@ -338,7 +349,23 @@ Route::get('get-my-order', 'getmyorder')->name('get.order');
 
         });
     });
+
+    Route::controller(GroupMessageController::class)->group(function () {
+        Route::post('send_message/{community_id}', 'send_message');
+        Route::get('show_message/{community_id}', 'show_message');
+
+
+
+
+    });
+
+
+
+
 });
+
+
+
 
 
 

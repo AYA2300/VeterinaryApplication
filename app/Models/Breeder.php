@@ -69,4 +69,16 @@ class Breeder  extends Authenticatable implements JWTSubject
         public function cart(){
             return $this->morphOne(Cart::class,'userable');
         }
+
+
+        public function communities()
+        {
+            return $this->belongsToMany(Community::class, 'breeder_community');
+        }
+
+
+        public function group_messages()
+        {
+            return $this->hasMany(  Group_Message::class);
+        }
 }

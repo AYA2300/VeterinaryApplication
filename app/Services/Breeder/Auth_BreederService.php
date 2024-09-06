@@ -2,6 +2,7 @@
     namespace App\Services\Breeder;
 
 use App\Models\Breeder;
+use App\Models\Community;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -34,10 +35,19 @@ use Throwable;
 
                 ]);
 
+
           if (isset($input_data['animal_categorie_id']) || is_array(isset($input_data['animal_categorie_id']))) {
 
                    $breeder->animalCategories()->attach($input_data['animal_categorie_id']);
                  }
+                // dd($breeder->animalCategories());
+                  // إضافة المربي إلى المجتمعات بناءً على فئات الحيوانات
+
+            $communities = Community::whereIn('animal_categorie_id', $input_data['animal_categorie_id'])->get();
+
+            foreach ($communities as $community) {
+                $breeder->communities()->attach($community->id);
+            }
 
 
 
@@ -50,7 +60,7 @@ use Throwable;
                 $data['Breeder']=$breeder;
                 $data['auth_token']=$auth_token;
                 $status_code = 200;;
-                $msg = 'Register Breeder ';
+                $msg = 'Breeder registered successfully and joined communities ';
 
 
             // }catch(Throwable $th){

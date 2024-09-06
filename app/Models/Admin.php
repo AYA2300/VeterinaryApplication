@@ -54,4 +54,12 @@ protected $hidden = [
     {
         return [];
     }
+
+    public function communities()
+{
+    return $this->belongsToMany(Community::class, 'admin_community');
+}
+
+
+
 }

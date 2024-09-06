@@ -20,5 +20,14 @@ class AnimalCategorie extends Model
         return $this->belongsToMany(Breeder::class, 'animal_categorie_breeder');
     }
 
+    public function community()
+    {
+        return $this->hasOne(Community::class);
+    }
+
+
+
+
+
 
 }

@@ -3,6 +3,7 @@ namespace App\Http\Traits;
 
 use Exception;
 use Illuminate\Support\Str;
+use League\Flysystem\Visibility;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,27 +13,29 @@ use Illuminate\Support\Facades\Storage;
     public function storeFile($file,string $folderName)
     {
         // $file = $request->file;
-        $originalName = $file->getClientOriginalName();
+        // $originalName = $file->getClientOriginalName();
 
-        // Check for double extensions in the file name
-        if (preg_match('/\.[^.]+\./', $originalName)) {
-            throw new Exception(trans('general.notAllowedAction'), 403);
-        }
+        // // Check for double extensions in the file name
+        // if (preg_match('/\.[^.]+\./', $originalName)) {
+        //     throw new Exception(trans('general.notAllowedAction'), 403);
+        // }
 
-        //validate the mime type and extentions
-        $allowedMimeTypes = ['image/jpeg','image/png','image/gif'];
-        $allowedExtensions = ['jpeg','png','gif','jpg'];
-        $mime_type = $file->getClientMimeType();
+        // //validate the mime type and extentions
+        // $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jfif', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+        // $allowedExtensions = ['jpeg', 'png', 'gif', 'jpg', 'jfif', 'pdf', 'doc', 'docx'];
+
+        // $mime_type = $file->getClientMimeType();
+        // $extension = $file->getClientOriginalExtension();
+        // //validate the mime type and extentions
+        //  $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jfif', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+        // $allowedExtensions = ['jpeg', 'png', 'gif', 'jpg', 'jfif', 'pdf', 'doc', 'docx'];
+
+        // $mime_type = $file->getClientMimeType();
         $extension = $file->getClientOriginalExtension();
-        //validate the mime type and extentions
-        $allowedMimeTypes = ['image/jpeg','image/png','image/gif','image/jfif'];
-        $allowedExtensions = ['jpeg','png','gif','jpg','jfif'];
-        $mime_type = $file->getClientMimeType();
-        $extension = $file->getClientOriginalExtension();
 
-        if (!in_array($mime_type,$allowedMimeTypes) || !in_array($extension,$allowedExtensions)){
-            throw new Exception(trans('general.invalidFileType'), 403);
-        }
+        // if (!in_array($mime_type,$allowedMimeTypes) || !in_array($extension,$allowedExtensions)){
+        //     throw new Exception(trans('general.invalidFileType'), 403);
+        // }
 
         // Sanitize the file name to prevent path traversal
         $fileName = Str::random(32);
@@ -44,15 +47,14 @@ use Illuminate\Support\Facades\Storage;
         //verify the path to ensure it matches the expected pattern
         $expectedPath = storage_path('app/public/'. $folderName .'/' . $fileName . '.' . $extension);
         $actualPath = storage_path('app/public/'.$path);
-        if ($actualPath !== $expectedPath){
-            Storage::disk('public')->delete($path);
-            throw new Exception(trans('general.notAllowedAction'),403);
-        }
+
 
         // get the url of the stored file
         // $url = Storage::disk('public')->url($path);
         $url = Storage::url($path);
         return $url;
+
+
     }
     // public function store_multi_images($images) :array
     // {

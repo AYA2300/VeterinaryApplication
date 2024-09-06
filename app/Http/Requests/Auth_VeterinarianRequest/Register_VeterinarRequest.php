@@ -32,8 +32,8 @@ class Register_VeterinarRequest extends FormRequest
             'Address'=>'nullable',
             'phone_number'=>'required|string',
             'Specialization'=>'nullable|string',
-            'experience_certificate_image.*' =>"file|image|mimes:png,jpg,jpeg,jfif|max:10000|mimetypes:image/jpeg,image/png,image/jpg,image/jfif|max:2048",
-             'experience_certificate_image'=>'array|max:5',
+        'experience_certificate_image.*' => "file|mimes:pdf,doc,docx,png,jpg,jpeg,jfif|max:10000",
+'experience_certificate_image' => 'array|max:5',
              'role' => ['in:veterinarian'],
 
         ];

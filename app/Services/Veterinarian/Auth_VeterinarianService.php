@@ -39,7 +39,7 @@ use HasApiTokens,FileStorageTrait;
              'role' =>'veterinarian',
              //store img using trait
              'certificate_image'=>$this->storeFile($input_data['certificate_image'],'Veterinarians'),
-              'experience_certificate_image'=> implode(' ; ', $experience_certificate_image),
+              'experience_certificate_image'=> implode(' , ', $experience_certificate_image),
               'photo' => isset($input_data['photo'])?$this->storeFile($input_data['photo'],'photoDoctor'):'null',
               'Specialization'=>$input_data['Specialization']??'null',
               'Address' =>$input_data['Address']??'null',

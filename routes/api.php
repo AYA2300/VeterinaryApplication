@@ -353,6 +353,7 @@ Route::get('get-my-order', 'getmyorder')->name('get.order');
     Route::controller(GroupMessageController::class)->group(function () {
         Route::post('send_message/{community_id}', 'send_message');
         Route::get('show_message/{community_id}', 'show_message');
+        Route::get('get_communities', 'get_communities');
 
 
 

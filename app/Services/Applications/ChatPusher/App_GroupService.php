@@ -121,9 +121,31 @@ class App_GroupService{
 
 
 
+}
+
+public function get_communities(){
+    $breeder=Auth::guard('breeder')->user();
+
+    $communities=$breeder->communities;
+
+
+    $data['communities']=$communities;
+    $status_code = 200;
+    $msg = 'Message sent successfully';
+
+
+// Prepare the result
+$result = [
+    'data' => $data,
+    'status_code' => $status_code,
+    'msg' => $msg,
+];
+
+return $result;
+}
 
 
 
 
 
-}}
+}

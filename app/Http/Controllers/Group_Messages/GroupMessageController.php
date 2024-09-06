@@ -36,7 +36,7 @@ class GroupMessageController extends Controller
 
 
     public function show_message($community_id)
-                {
+{
                     $result=$this->group_message_service->show_message($community_id);
                     $output=[];
                     if($result['status_code'] == 200){
@@ -49,4 +49,13 @@ class GroupMessageController extends Controller
                     return $this->send_response($result_data, $result['msg'], $result['status_code']);
 
                 }
+
+
+        public function get_communities(){
+            $result=$this->group_message_service->get_communities();
+
+            return $this->send_response($result, $result['msg'], $result['status_code']);
+
+
+        }
 }

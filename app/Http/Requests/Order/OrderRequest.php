@@ -23,11 +23,18 @@ class OrderRequest extends FormRequest
     {
         return [
             //
-            'cart_id' => 'exists:carts,id',
+            'feeds.*.quantity' => 'nullable|integer|min:1',
+            'medicines.*.quantity' => 'nullable|integer|min:1',
+
+            'delivery_type' => 'required|string|in:delivery,non_delivery',
+            'location_id' => 'required_if:delivery_type,delivery|exists:locations,id',
+            'total_price' => 'required|numeric|min:0',
+            'userable_id' => 'exists:breeders,id|exists:veterinarians,id',
             'order_number' => 'string|unique:orders,order_number',
-            'location_id' => 'nullable|exists:locations,id',
-            'delivery_type' => 'in:delivery,non_delivery',
-            
+            'medicines' => 'nullable|array',
+             'medicines.*.id' => 'required_with:medicines|exists:medicines,id',
+              'feeds' => 'nullable|array',
+             'feeds.*.id' => 'required_with:feeds|exists:feeds,id',
         ];
     }
 }

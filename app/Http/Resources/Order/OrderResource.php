@@ -3,7 +3,9 @@
 namespace App\Http\Resources\Order;
 
 use Illuminate\Http\Request;
+use App\Http\Resources\Feed\FeedResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Medicine\MedicineResource;
 
 class OrderResource extends JsonResource
 {
@@ -17,17 +19,44 @@ class OrderResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'user_id' => $this->cart->userable->name,
-            'userable_name' => $this->cart->userable->id,
-            'role' => $this->cart->userable->role,
+            'user_id' => $this->userable->id,
+            'userable_name' => $this->userable->name,
+            'role' => $this->userable->role,
+            'total_price' =>$this->total_price,
 
-            'cart_id' => $this->cart_id,
             'location' =>$this->location->name??'center' ,
-             'delivery_price' =>$this->location->delivery_price??'0',
             'order_number' => $this->order_number,
             'status' => $this->status??'pending',
-            'time'=> ($this->created_at)->format('Y-m-d H:i:s A')
+            'time'=> ($this->created_at)->format('Y-m-d H:i:s A'),
+          'items' => $this->orderItems->map(function ($item) {
+        $item_type = class_basename($item->itemable_type);
 
+        if ($item_type === 'Feed') {
+            return [
+                'item_id' => $item->itemable->id,
+                'quantity' => $item->quantity,
+                'item_type' => $item_type,
+                'item_name' => $item->itemable->name,
+                'item_details' => new FeedResource($item->itemable),
+            ];        }
+
+        if ($item_type === 'Medicine') {
+            return [
+                'item_id' => $item->itemable->id,
+                'quantity' => $item->quantity,
+                'item_type' => $item_type,
+                'item_name' => $item->itemable->name,
+                'item_details' => new MedicineResource($item->itemable),
+            ];        }
+
+        // return [
+        //     'item_id' => $item->itemable->id,
+        //     'quantity' => $item->quantity,
+        //     'item_type' => $item_type,
+        //     'item_name' => $item->itemable->name,
+        // ];
+    }),
         ];
+
     }
 }

@@ -72,8 +72,8 @@ class Veterinarian extends Authenticatable implements JWTSubject
         return $this->morphMany(Message::class,'messageable_sender');
        }
 
-       //cart
-       public function cart(){
-        return $this->morphOne(Cart::class,'userable');
+       //order
+       public function orders(){
+        return $this->morphMany(Order::class,'userable');
     }
 }

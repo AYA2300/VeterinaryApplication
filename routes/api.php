@@ -322,20 +322,8 @@ Route::group(['prefix' => 'breeder'], function () {
 
 
     //cart
-  
-    //order
-    Route::controller(OrderController::class)->group(function () {
-
-        Route::group(['middleware' => ['auth:breeder,veterinarian']], function () {
 
 
-                  ///confirm order
-            Route::Post('order', 'confirmOrder')->name('add.order');
-//get my order
-Route::get('get-my-order', 'getmyorder')->name('get.order');
-
-        });
-    });
 
     Route::controller(GroupMessageController::class)->group(function () {
         Route::post('send_message/{community_id}', 'send_message');
@@ -350,6 +338,21 @@ Route::get('get-my-order', 'getmyorder')->name('get.order');
 
 
 
+});
+
+
+  //order
+  Route::controller(OrderController::class)->group(function () {
+
+Route::group(['middleware' => ['auth:breeder,veterinarian']], function () {
+
+
+              ///confirm order
+         Route::Post('order', 'confirmOrder')->name('add.order');
+//get my order
+        Route::get('get-my-order', 'getmyorder')->name('get.order');
+
+    });
 });
 
 

@@ -22,9 +22,9 @@ class Login_VeterinarianRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
-            'phone_number' =>'required|string',
-            'password' =>'required|min:6|max:8'
+            'email' => 'nullable|email|required_without:phone_number',
+            'phone_number' => 'nullable|string|required_without:email',
+            'password' => 'required|min:6|max:8',
         ];
     }
 }

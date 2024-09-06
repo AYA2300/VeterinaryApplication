@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\FileStorageTrait;
 use Laravel\Sanctum\HasApiTokens;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
+use Symfony\Component\Console\Input\Input;
 
 class Auth_VeterinarianService{
 use HasApiTokens,FileStorageTrait;
@@ -165,62 +166,141 @@ public function refresh_token()
 
 }
 
+// public function login(array $input_data)
+// {
+
+
+
+// $data = [];
+// $status_code = 400;
+// $msg = '';
+// $result = [];
+
+// if(isset($input_data['email'])){
+//     $credentials = [
+//         'email' => $input_data['email'],
+//         'password' => $input_data['password']
+//     ];
+
+// }else{
+//     $credentials = [
+//         'phone_number' => $input_data['phone_number'],
+//         'password' => $input_data['password']
+//     ];
+
+// }
+
+
+
+// // حاول تسجيل الدخول كـ breeder
+// if ($auth_token = Auth::guard('breeder')->attempt($credentials)) {
+//     $breeder = Auth::guard('breeder')->user();
+
+//     $data = [
+//         'user_type' => 'breeder',  // تحديد نوع المستخدم
+//         'user' => $breeder,
+//         'auth_token' => $auth_token,
+//     ];
+//     $status_code = 200;
+//     $msg = 'Logged in as Breeder';
+// }
+// // حاول تسجيل الدخول كـ veterinarian
+// elseif ($auth_token = Auth::guard('veterinarian')->attempt($credentials)) {
+//     $veterinarian = Auth::guard('veterinarian')->user();
+
+//     $data = [
+//         'user_type' => 'veterinarian',  // تحديد نوع المستخدم
+//         'user' => $veterinarian,
+//         'auth_token' => $auth_token,
+//     ];
+//     $status_code = 200;
+//     $msg = 'Logged in as Veterinarian';
+// }
+// else {
+//     // إذا كانت بيانات الدخول غير صحيحة لأي من الحارسين
+//     $status_code = 404;
+//     $msg = 'Please check your number and password';
+// }
+
+// $result = [
+//     'data' => $data,
+//     'status_code' => $status_code,
+//     'msg' => $msg,
+// ];
+
+// return $result;
+
+
+
+// }
+
+
 public function login(array $input_data)
 {
+    $data = [];
+    $status_code = 400;
+    $msg = '';
+    $result = [];
 
+    // حاول تسجيل الدخول كـ breeder باستخدام رقم الهاتف فقط
+    if (isset($input_data['phone_number']) && !isset($input_data['email'])) {
+        $credentials = [
+            'phone_number' => $input_data['phone_number'],
+            'password' => $input_data['password']
+        ];
 
+        if ($auth_token = Auth::guard('breeder')->attempt($credentials)) {
+            $breeder = Auth::guard('breeder')->user();
 
-$data = [];
-$status_code = 400;
-$msg = '';
-$result = [];
+            $data = [
+                'user_type' => 'breeder',  // تحديد نوع المستخدم
+                'user' => $breeder,
+                'auth_token' => $auth_token,
+            ];
+            $status_code = 200;
+            $msg = 'Logged in as Breeder';
+        } else {
+            $status_code = 404;
+            $msg = 'Breeder login failed. Please check your phone number and password.';
+        }
 
-$credentials = [
-    'phone_number' => $input_data['phone_number'],
-    'password' => $input_data['password']
-];
+    }
+    // حاول تسجيل الدخول كـ veterinarian باستخدام إما البريد الإلكتروني أو رقم الهاتف
+    elseif (isset($input_data['email']) || isset($input_data['phone_number'])) {
+        $credentials = isset($input_data['email']) ?
+            ['email' => $input_data['email'], 'password' => $input_data['password']] :
+            ['phone_number' => $input_data['phone_number'], 'password' => $input_data['password']];
 
-// حاول تسجيل الدخول كـ breeder
-if ($auth_token = Auth::guard('breeder')->attempt($credentials)) {
-    $breeder = Auth::guard('breeder')->user();
+        if ($auth_token = Auth::guard('veterinarian')->attempt($credentials)) {
+            $veterinarian = Auth::guard('veterinarian')->user();
 
-    $data = [
-        'user_type' => 'breeder',  // تحديد نوع المستخدم
-        'user' => $breeder,
-        'auth_token' => $auth_token,
+            $data = [
+                'user_type' => 'veterinarian',  // تحديد نوع المستخدم
+                'user' => $veterinarian,
+                'auth_token' => $auth_token,
+            ];
+            $status_code = 200;
+            $msg = 'Logged in as Veterinarian';
+        } else {
+            $status_code = 404;
+            $msg = 'Veterinarian login failed. Please check your credentials.';
+        }
+    }
+    else {
+        // إذا كانت بيانات الدخول غير صحيحة
+        $status_code = 404;
+        $msg = 'Please provide valid credentials.';
+    }
+
+    $result = [
+        'data' => $data,
+        'status_code' => $status_code,
+        'msg' => $msg,
     ];
-    $status_code = 200;
-    $msg = 'Logged in as Breeder';
-}
-// حاول تسجيل الدخول كـ veterinarian
-elseif ($auth_token = Auth::guard('veterinarian')->attempt($credentials)) {
-    $veterinarian = Auth::guard('veterinarian')->user();
 
-    $data = [
-        'user_type' => 'veterinarian',  // تحديد نوع المستخدم
-        'user' => $veterinarian,
-        'auth_token' => $auth_token,
-    ];
-    $status_code = 200;
-    $msg = 'Logged in as Veterinarian';
-}
-else {
-    // إذا كانت بيانات الدخول غير صحيحة لأي من الحارسين
-    $status_code = 404;
-    $msg = 'Please check your number and password';
+    return $result;
 }
 
-$result = [
-    'data' => $data,
-    'status_code' => $status_code,
-    'msg' => $msg,
-];
-
-return $result;
-
-
-
-}
 
 
 

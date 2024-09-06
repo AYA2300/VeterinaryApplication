@@ -12,7 +12,7 @@ class Order extends Model
 
     protected $fillable=[
         'cart_id','order_number','delivery_type','location_id',
-        'status'
+        'status','userable_id','userable_type','total_price'
     ];
 
 
@@ -21,12 +21,11 @@ class Order extends Model
 
     }
 
-    //cart
+    //morph
 
-
-    public function cart()
+    public function userable()
     {
-        return $this->belongsTo(Cart::class);
+        return $this->morphTo();
     }
     public static function generateOrderNumber()
     {

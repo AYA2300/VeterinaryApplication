@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('order_id')->constraiend('orders')->onDelete('cascade');
             $table->morphs('itemable');
             $table->integer('quantity');
+
             $table->timestamps();
         });
     }

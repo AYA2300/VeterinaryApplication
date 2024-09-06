@@ -41,11 +41,7 @@ class OrderController extends Controller
             $result_data = $result['data'];
             // response data preparation:
             $output['order'] = new  OrderResource($result_data['order']);
-          $output['medicines'] =  MedicineResource::collection($result_data['medicines']);
-            $output['feeds'] = FeedResource::collection($result_data['feeds']);
-            $output['sumPrice'] = $result_data['sumPrice'];
-            $output['delivery_price'] = $result_data['delivery_price'];
-            $output['total_Price'] = $result_data['total_Price'];
+
 
 
         }
@@ -65,7 +61,8 @@ class OrderController extends Controller
         if ($result['status_code'] == 200) {
             $result_data = $result['data'];
             // response data preparation:
-            $output['items'] = $result_data['items'];
+                     $output['orders'] =   OrderResource::collection($result_data['orders']);
+
 
         }
       return $this->send_response($output, $result['msg'], $result['status_code']);

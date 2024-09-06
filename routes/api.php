@@ -303,7 +303,6 @@ Route::group(['prefix' => 'breeder'], function () {
             //logout
             Route::Post('auth/logout-breeder', 'logout_breeder')->name('auth.logout');
             ///Add To Cart
-            Route::Post('add-to-cart/{item_id}', 'AddToCart')->name('add.cart');
 
         });
 
@@ -312,19 +311,7 @@ Route::group(['prefix' => 'breeder'], function () {
 
 
     //cart
-    Route::controller(App_AddToCartController::class)->group(function () {
-
-        Route::group(['middleware' => ['auth:breeder,veterinarian']], function () {
-
-
-                  ///Add To Cart
-            Route::Post('add-to-cart/{item_id}', 'AddToCart')->name('add.cart');
-            Route::get('get-my-cart', 'get_items_cart')->name('get.cart');
-            Route::Delete('delete-item/{item_id}', 'delete_item')->name('delete.cart');
-            Route::Delete('clear', 'clear')->name('clear.cart');
-
-        });
-    });
+  
     //order
     Route::controller(OrderController::class)->group(function () {
 

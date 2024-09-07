@@ -65,4 +65,24 @@ class Dash_VeterinariansController extends Controller
     return $this->send_response($output, $result['msg'], $result['status_code']);
 
   }
+
+  public function edit_approved(Veterinarian $veterinarian){
+
+
+    $result=$this->dash_veterinarians_services->edit_approved($veterinarian);
+
+    $output=[];
+    if($result['status_code']==200){
+
+    }
+
+    return $this->send_response($output, $result['msg'], $result['status_code']);
+
+
+
+  }
+
+
+
+
 }

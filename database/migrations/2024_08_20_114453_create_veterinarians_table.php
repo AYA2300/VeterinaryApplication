@@ -24,6 +24,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->string('email')->unique();
             $table->string('password');
+            $table->boolean('is_approved')->default(false);
             $table->string('confirm_password');
             $table->timestamps();
         });

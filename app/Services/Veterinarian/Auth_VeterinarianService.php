@@ -272,15 +272,24 @@ public function login(array $input_data)
             ['phone_number' => $input_data['phone_number'], 'password' => $input_data['password']];
 
         if ($auth_token = Auth::guard('veterinarian')->attempt($credentials)) {
+
             $veterinarian = Auth::guard('veterinarian')->user();
 
-            $data = [
-                'user_type' => 'veterinarian',  // تحديد نوع المستخدم
-                'user' => $veterinarian,
-                'auth_token' => $auth_token,
-            ];
-            $status_code = 200;
-            $msg = 'Logged in as Veterinarian';
+            if ($veterinarian->is_approved==true){
+
+                $data = [
+                    'user_type' => 'veterinarian',  // تحديد نوع المستخدم
+                    'user' => $veterinarian,
+                    'auth_token' => $auth_token,
+                ];
+                $status_code = 200;
+                $msg = 'Logged in as Veterinarian';
+             } else {
+                $status_code=403;
+                $msg = 'لم تتم الموافقة على حسابك بعد.';
+
+            }
+
         } else {
             $status_code = 404;
             $msg = 'Veterinarian login failed. Please check your credentials.';

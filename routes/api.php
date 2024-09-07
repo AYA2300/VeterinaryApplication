@@ -358,6 +358,9 @@ Route::group(['middleware' => ['auth:breeder,veterinarian']], function () {
 
 
 
+Route::controller(AnimalCategorieController::class)->group(function () {
+    Route::get('app/get_animal_categorey', 'get_categories')->name('get_categories');});
+
 
 
 

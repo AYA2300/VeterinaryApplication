@@ -4,6 +4,7 @@ namespace App\Services\Dashboard\Order;
 use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class Dash_OrderService{
 

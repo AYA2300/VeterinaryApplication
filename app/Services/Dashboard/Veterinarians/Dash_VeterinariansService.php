@@ -71,6 +71,30 @@ use App\Models\Veterinarian;
 
        }
 
+
+       public function edit_approved(Veterinarian $veterinarian){
+        $veterinarian->is_approved = true;
+        $veterinarian->save();
+        $data['veterinarian']=$veterinarian;
+
+        $msg='تم اضافة الطبيب';
+        $status_code=200;
+       $result = [
+           'data' => $data,
+           'status_code' => $status_code,
+           'msg' => $msg,
+       ];
+
+       return $result;
+
+
+
+
+
+
+
+       }
+
     }
 
 

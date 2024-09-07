@@ -89,6 +89,7 @@ Route::group(['prefix' => 'dash'], function () {
                 Route::get('get-veterinarian/{veterinarian}','get_veterinarian')->name('dash.get_veterinarian');
                 //delete doctor
                 Route::Delete('delete-veterinarian/{veterinarian}','delete_veterinarian')->name('dash.delete_veterinarian');
+                Route::post('edit_approved/{veterinarian}','edit_approved');
 
              });
              //----crud category---------------

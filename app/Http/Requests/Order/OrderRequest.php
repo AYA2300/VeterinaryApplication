@@ -31,9 +31,9 @@ class OrderRequest extends FormRequest
             'total_price' => 'required|min:0|string',
             'userable_id' => 'exists:breeders,id|exists:veterinarians,id',
             'order_number' => 'string|unique:orders,order_number',
-            'medicines' => 'nullable|array',
+            'medicines' => 'nullable',
              'medicines.*.id' => 'required_with:medicines|exists:medicines,id',
-              'feeds' => 'nullable|array',
+              'feeds' => 'nullable',
              'feeds.*.id' => 'required_with:feeds|exists:feeds,id',
         ];
     }

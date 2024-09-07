@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\FileStorageTrait;
 use App\Models\Breeder;
+use App\Notifications\MessageReceivedNotification;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
 
@@ -68,6 +69,10 @@ use Throwable;
 
 
                     $conversation_id=$conversation->id;
+                   // $notification="رسالة من".$sender;
+
+
+                    $receiver->notify(new MessageReceivedNotification($message, $sender, $receiver));
                     \broadcast(new SendMessageEvent($message, $conversation_id))->toOthers();
                     DB::commit();
                     $data['message']=$message;

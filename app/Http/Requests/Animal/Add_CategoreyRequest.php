@@ -22,7 +22,7 @@ class Add_CategoreyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>'required|string'
+            'name'=>'required|string|unique:animal_categories,name',
 
         ];
     }

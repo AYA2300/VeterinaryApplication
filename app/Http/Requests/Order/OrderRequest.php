@@ -28,7 +28,7 @@ class OrderRequest extends FormRequest
 
             'delivery_type' => 'required|string|in:delivery,non_delivery',
             'location_id' => 'required_if:delivery_type,delivery|exists:locations,id',
-            'total_price' => 'required|numeric|min:0',
+            'total_price' => 'required|min:0|string',
             'userable_id' => 'exists:breeders,id|exists:veterinarians,id',
             'order_number' => 'string|unique:orders,order_number',
             'medicines' => 'nullable|array',

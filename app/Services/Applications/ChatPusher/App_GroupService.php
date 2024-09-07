@@ -5,6 +5,7 @@ use App\Events\GroupMessageEvent;
 use App\Http\Traits\FileStorageTrait;
 use App\Models\Community;
 use App\Models\Group_Message;
+use App\Notifications\CommunityMessageNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -51,11 +52,20 @@ class App_GroupService{
                 'type' => $input_data['type'],
             ]);
 
-            \broadcast(new GroupMessageEvent($message, $community_id))->toOthers();
 
+            \broadcast(new GroupMessageEvent($message, $community_id))->toOthers();
+            $community_members = $community->breeders;
+
+            // إرسال إشعار لكل مربي في المجتمع
+            foreach ($community_members as $member) {
+                if ($member->id != $breeder->id) { // لا ترسل إشعار لنفس الشخص الذي أرسل الرسالة
+                    $member->notify(new CommunityMessageNotification($message));
+                }
+            }
 
 
             $data = [
+                'community_id'=>$community_id,
                 'message_id' => $message->id,
                 'sender_id' => $breeder->id,
                 'sender_name'=>$breeder->name,

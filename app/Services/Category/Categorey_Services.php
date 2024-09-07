@@ -2,12 +2,15 @@
     namespace App\Services\Category;
 
 use App\Http\Resources\Categorie\Categorie_Resource;
+use App\Http\Traits\FileStorageTrait;
 use App\Models\AnimalCategorie;
+use App\Models\Community;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
     class Categorey_Services{
+        use FileStorageTrait;
 
         public function add_categorey(array $input_data){
 
@@ -22,13 +25,23 @@ use Throwable;
                 $Category=AnimalCategorie::create([
                  'name' => $input_data['name']]);
 
+            $Community=Community::create([
+
+            'name' => $input_data['name'],
+            'image' => isset($input_data['image'])?$this->storeFile($input_data['image'],'CommunityImage'):'null',
+            'animal_categorie_id'=>$Category->id
+
+                 ]);
+
 
              DB::commit();
 
              $data['Animal_Categorey'] = $Category;
+             $data['Community'] = $Community;
+
 
              $status_code = 200;;
-             $msg = ' Animal_Categorey Added';
+             $msg = ' Animal_Categorey and communities Added';
             }
             catch(Throwable $th){
                 DB::rollBack();

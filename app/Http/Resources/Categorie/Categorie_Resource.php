@@ -18,6 +18,7 @@ class Categorie_Resource extends JsonResource
             'id'=>$this->id,
             'name'=>$this->name
 
+
         ];
     }
 }

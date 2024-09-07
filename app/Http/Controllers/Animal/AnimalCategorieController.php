@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Animal\Add_CategoreyRequest;
 use App\Http\Requests\Animal\Update_CategoreyRequest;
 use App\Http\Resources\Categorie\Categorie_Resource;
+use App\Http\Resources\Community\CommunityResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\AnimalCategorie;
 use App\Services\Category\Categorey_Services;
@@ -35,6 +36,7 @@ class AnimalCategorieController extends Controller
             $result_data = $result['data'];
             // response data preparation:
             $output['Animal_Categorey']= new Categorie_Resource($result_data['Animal_Categorey']);
+            $output['Community']= new CommunityResource($result_data['Community']);
 
 
     }

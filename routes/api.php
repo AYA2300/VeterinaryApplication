@@ -9,8 +9,7 @@ use App\Http\Controllers\DashAuth\AuthAdminController;
 
 use App\Http\Controllers\Breeder\Auth_BreederController;
 use App\Http\Controllers\Animal\AnimalCategorieController;
-
-
+use App\Http\Controllers\Application\App_AnimalCategorieController;
 use App\Http\Controllers\Application\Order\OrderController;
 use App\Http\Controllers\Application\Feed\App_FeedController;
 use App\Http\Controllers\Dashboard\Feeds\Dash_FeedController;
@@ -96,7 +95,7 @@ Route::group(['prefix' => 'dash'], function () {
              Route::controller(AnimalCategorieController::class)->group(function () {
                 Route::post('add/animal_categorey', 'add_categorey')->name('add_categorey');
                 Route::post('Edit/animal_categorey/{id}', 'update_categorey')->name('update_categorey');
-                Route::get('get/animal_categorey', 'get_categories')->name('get_categories');
+               // Route::get('get/animal_categorey', 'get_categories')->name('get_categories');
                 Route::delete('delete/animal_categorey/{id}', 'delete_categories')->name('delete_categories');
 
            });
@@ -358,7 +357,7 @@ Route::group(['middleware' => ['auth:breeder,veterinarian']], function () {
 
 
 
-Route::controller(AnimalCategorieController::class)->group(function () {
+Route::controller(App_AnimalCategorieController::class)->group(function () {
     Route::get('app/get_animal_categorey', 'get_categories')->name('get_categories');});
 
 

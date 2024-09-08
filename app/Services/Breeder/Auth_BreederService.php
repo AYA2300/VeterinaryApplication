@@ -129,7 +129,7 @@ use Throwable;
                 $result = [];
 
                 $user=Auth::guard('breeder')->user();
-                $user->tokens()->delete();
+
                 Auth::guard('breeder')->logout();
 
                 $msg='logged out';

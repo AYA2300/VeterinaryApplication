@@ -243,6 +243,7 @@ use Throwable;
                     'message' => $message->message,
                     'receiver_id' => $receiver_id,
                     'sender_id'=>$sender_id,
+                    'type'=>$message->type,
                     'time'=>($message->created_at)->format('Y-m-d H:i:s A'),
 
                 ];
@@ -266,6 +267,34 @@ use Throwable;
         ];
 
         return $result;
+    }
+
+
+    public function get_conversations(){
+
+        $user = Auth::guard('breeder')->user() ?? Auth::guard('veterinarian')->user();
+
+
+        $conversation=$user->conversations;
+        $data['conversation']=$conversation;
+
+
+
+        $status_code = 200;
+        $msg = 'المحادثات ';
+
+
+    $result = [
+        'data' =>$data,
+
+
+        'status_code' => $status_code,
+        'msg' => $msg,
+    ];
+
+    return $result;
+
+
     }
 
 

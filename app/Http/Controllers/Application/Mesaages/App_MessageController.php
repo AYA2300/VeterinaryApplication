@@ -69,4 +69,22 @@ class App_MessageController extends Controller
                     return $this->send_response($result_data, $result['msg'], $result['status_code']);
 
                 }
+
+
+
+
+                public function get_conversations()
+                {
+                    $result=$this->app_message_service->get_conversations();
+                    $output=[];
+                    if($result['status_code'] == 200){
+
+                   $result_data = $result['data'] ;
+                    // response data preparation:
+                //   $output['messages'] =  MessageResource::collection ($result_data['messages']);
+
+          }
+                    return $this->send_response($result_data, $result['msg'], $result['status_code']);
+
+                }
 }

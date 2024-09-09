@@ -288,6 +288,9 @@ Route::group(['prefix' => 'app'], function () {
                             Route::post('send-message/{receiver_id}', 'send_message');
                             Route::get('get-messages/{conversation}', 'show_messages');
                             Route::get('get-message/{id}', 'show_message');
+                            Route::get('get_conversations', 'get_conversations');
+
+
 
 
 

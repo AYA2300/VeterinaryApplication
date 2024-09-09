@@ -69,6 +69,7 @@ class App_GroupService{
                 'message_id' => $message->id,
                 'sender_id' => $breeder->id,
                 'sender_name'=>$breeder->name,
+                'type'=>$message->type,
                 'message' => $messageContent,
 
             ];
@@ -107,6 +108,7 @@ class App_GroupService{
                     'message_id' => $message->id,
                     'message' => $message->message,
                     'sender_id' => $message->breeder->id,
+                    'type'=>$message->type,
                     'sender_name' => $message->breeder->name, // Include other user details if needed
                     'created_at' => $message->created_at,
                 ];

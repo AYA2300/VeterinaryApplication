@@ -76,4 +76,10 @@ class Veterinarian extends Authenticatable implements JWTSubject
        public function orders(){
         return $this->morphMany(Order::class,'userable');
     }
+
+
+    public function routeNotificationForPusher()
+    {
+        return 'veterinarians.' . $this->id;
+    }
 }

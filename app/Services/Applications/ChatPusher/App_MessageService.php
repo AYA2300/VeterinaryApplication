@@ -69,11 +69,15 @@ use Throwable;
 
 
                     $conversation_id=$conversation->id;
-                   // $notification="رسالة من".$sender;
 
 
-                    $receiver->notify(new MessageReceivedNotification($message, $sender, $receiver));
+
                     \broadcast(new SendMessageEvent($message, $conversation_id))->toOthers();
+                    $receiver->notify(new MessageReceivedNotification($message, $sender, $receiver));
+
+
+
+
                     DB::commit();
                     $data['message']=$message;
                     $status_code=200;

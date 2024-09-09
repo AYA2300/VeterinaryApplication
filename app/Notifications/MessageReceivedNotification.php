@@ -36,7 +36,7 @@ class MessageReceivedNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['broadcast'];
+        return ['database', 'broadcast'];
     }
 
     /**
@@ -57,6 +57,7 @@ class MessageReceivedNotification extends Notification implements ShouldQueue
             'sender_name' => $this->sender->name,
             'receiver_id' => $this->receiver->id,
             'receiver_name' => $this->receiver->name,
+             'notification_type' => 'chat'
         ]);}
 
     /**
@@ -66,8 +67,13 @@ class MessageReceivedNotification extends Notification implements ShouldQueue
      */
     public function toArray(object $notifiable): array
     {
-        return [
-            //
-        ];
+
+            return [
+                'message' => $this->message,
+                'sender_name' => $this->sender->name,
+                'sender_id' => $this->sender->id,
+                 'notification_type' => 'chat'
+            ];
+
     }
 }

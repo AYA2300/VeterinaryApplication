@@ -30,6 +30,7 @@ use App\Http\Controllers\Application\Medicines\App_MedicineController;
 use App\Http\Controllers\Community\CommunityController;
 use App\Http\Controllers\Dashboard\Veterinarians\Dash_VeterinariansController;
 use App\Http\Controllers\Group_Messages\GroupMessageController;
+use App\Http\Controllers\NotificationController;
 use App\Models\Community;
 use App\Models\Group_Message;
 
@@ -291,6 +292,19 @@ Route::group(['prefix' => 'app'], function () {
 
 
                             });
+
+                            Route::controller(NotificationController::class)->group(function () {
+
+                                Route::get('/notifications/all','getAllNotifications');
+                                Route::get('/notifications/unread','getUnreadNotifications');
+                                Route::POST('mark_read/{notificationId}', 'markAsRead');
+                                Route::POST('read_all', 'markAllAsRead');
+
+
+
+                            });
+
+
                         });
 
 });

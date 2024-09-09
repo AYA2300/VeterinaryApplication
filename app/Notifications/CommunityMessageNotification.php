@@ -35,7 +35,7 @@ class CommunityMessageNotification extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         // يمكنك استخدام قنوات متعددة مثل broadcast, mail, أو database
-        return ['broadcast'];
+        return ['broadcast','database'];
     }
 
     /**
@@ -52,6 +52,7 @@ class CommunityMessageNotification extends Notification implements ShouldQueue
             'sender_id' => $this->message->breeder_id,
             'sender_name' => $this->message->breeder->name,
             'community_id' => $this->message->community_id,
+             'notification_type' => 'community'
         ]);
     }
 
@@ -62,6 +63,9 @@ class CommunityMessageNotification extends Notification implements ShouldQueue
             'sender_id' => $this->message->breeder_id,
             'sender_name' => $this->message->breeder->name,
             'community_id' => $this->message->community_id,
+            'notification_type' => 'community'
+
+
         ];
     }
 }

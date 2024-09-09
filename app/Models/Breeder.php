@@ -81,4 +81,11 @@ class Breeder  extends Authenticatable implements JWTSubject
         {
             return $this->hasMany(  Group_Message::class);
         }
+
+
+
+    public function routeNotificationForPusher()
+    {
+        return 'breeders.' . $this->id;
+    }
 }

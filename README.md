@@ -2,7 +2,8 @@
 ## About 
 VeterinaryApplication is a web application built with [Laravel](https://laravel.com/), a PHP framework designed for web artisans. 
 > [!NOTE]
-It includes a chat system using Pusher, along with notifications and a shopping cart system.
+_**It includes a chat system using Pusher, along with notifications and a shopping cart system. The application is designed for veterinarians and breeders, offering services such as a chat system for group conversations between breeders, as well as private chats between veterinarians and breeders. It also features a shopping cart for purchasing medicines, an order list, and real-time notifications powered by Pusher**_
+> 
 ## Installation
 1- Clone the repository
    ```bash

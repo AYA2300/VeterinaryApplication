@@ -27,5 +27,26 @@ PUSHER_APP_CLUSTER=eu
 BROADCAST_DRIVER=pusher
 
 ```
+5- Generate a JWT secret key:
+```
+php artisan jwt:secret
+```
+6-Migrate the database:
+```
+php artisan migrate
+php artisan db:seed
+```
+> [!NOTE]
+admin account:
+
+ email: admin@gmail.com <br>
+ password :12345678
+
+ 6-Start the Laravel development server:
+ ```
+php artisan serv
+```
+
+
 
 

@@ -19,7 +19,16 @@ cp .env.example .env
 php artisan key:generate
 
 ```
-4- Configure your .env file with your database credentials and other settings (like mail, pusher, etc.)
+4- Setting Up Pusher and Configure your .env file with your database credentials and other settings (like mail, pusher, etc.)
+```
+composer require pusher/pusher-php-server
+```
+### Create a Pusher Account
+Go to Pusher and sign up for an account if you don't already have one.
+Once signed in, create a new application on your Pusher dashboard. You'll need to provide details such as the application name and the cluster region.
+After creating the application, you will be provided with credentials including app_id, key, 
+### Update Your .env File
+
 ```
 PUSHER_APP_ID=
 PUSHER_APP_KEY=

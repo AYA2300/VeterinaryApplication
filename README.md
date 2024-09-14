@@ -47,6 +47,17 @@ admin account:
  ```
 php artisan serve
 ```
+## Technologies Used
+- **Laravel** - A PHP framework for building web applications.
+- **JWT (JSON Web Token)** - For handling authentication and securing API routes.
+- - **Spatie Packages** - For managing roles, permissions, and other functionalities in a clean and structured way.
+  - [spatie/laravel-permission](https://github.com/spatie/laravel-permission) for managing roles and permissions.
+-**Pusher** - For real-time communication, such as chats and notifications.
+- **Guards** - Used for managing multiple user types (e.g., veterinarians and breeders) and authentication processes.
+- **Shopping Cart System** - For managing and processing medicine orders.
+- **Order Management** - To handle order lists and statuses.
+- **Service Layer Architecture** - Used to cleanly separate business logic from the controllers, ensuring a clean code structure.
+
 
 
 

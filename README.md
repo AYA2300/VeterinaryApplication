@@ -44,7 +44,7 @@ admin account:
 
  6-Start the Laravel development server:
  ```
-php artisan serv
+php artisan serve
 ```
 
 

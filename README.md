@@ -12,3 +12,20 @@ git clone https://github.com/AYA2300/VeterinaryApplication
 ```
 composer install
 ```
+3- Environment Setup
+```
+cp .env.example .env
+php artisan key:generate
+
+```
+4- Configure your .env file with your database credentials and other settings (like mail, pusher, etc.)
+```
+PUSHER_APP_ID=
+PUSHER_APP_KEY=
+PUSHER_APP_SECRET=
+PUSHER_APP_CLUSTER=eu
+BROADCAST_DRIVER=pusher
+
+```
+
+

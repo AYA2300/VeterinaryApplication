@@ -47,7 +47,7 @@ admin account:
  ```
 php artisan serve
 ```
-## Technologies Used
+## :bell: Technologies Used
 - **Laravel** - A PHP framework for building web applications.
 - **JWT (JSON Web Token)** - For handling authentication and securing API routes.
 - - **Spatie Packages** - For managing roles, permissions, and other functionalities in a clean and structured way.

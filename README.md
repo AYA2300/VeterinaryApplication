@@ -7,7 +7,8 @@ _**It includes a chat system using Pusher, along with notifications and a shoppi
 ## Installation
 1- Clone the repository
    ```bash
-git clone [https://github.com/AYA2300/VeterinaryApplication.git]
+git clone git clone https://github.com/AYA2300/VeterinaryApplication.git
+
 ```
 2- install PHP dependencies using Composer:
 ```
